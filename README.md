@@ -275,3 +275,8 @@ Iniciar os serviços: docker-compose up
 Iniciar os serviços em segundo plano: docker-compose up -d
 Escalar um serviço: docker-compose up --scale <service>=<number>
 Parar os serviços: docker-compose down
+
+
+
+docs.docker.com
+
