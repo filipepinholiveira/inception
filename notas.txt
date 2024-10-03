@@ -1,0 +1,525 @@
+
+
+O arquivo docker-compose.yml é usado pelo Docker Compose para definir e gerenciar vários contêineres Docker em um ambiente multi-conteiner. 
+Ele permite que você configure e execute aplicações distribuídas de forma simples, especificando como cada contêiner (ou serviço) deve ser configurado e executado, 
+incluindo redes, volumes e dependências entre os contêineres. 
+
+Aqui estão os principais componentes e conceitos que geralmente aparecem no arquivo docker-compose.yml:
+
+
+Estrutura básica
+
+version: '3'
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./html:/usr/share/nginx/html
+    networks:
+      - my-network
+
+  database:
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - my-network
+
+networks:
+  my-network:
+
+volumes:
+  db-data:
+Explicação:
+
+
+version: Define a versão do formato do Docker Compose. A mais comum é 3, mas pode variar dependendo da compatibilidade que você deseja.
+services: Define os diferentes serviços ou contêineres que compõem a sua aplicação.
+web: Nome do serviço (pode ser qualquer nome).
+image: A imagem Docker que será usada para este contêiner. Neste exemplo, estamos usando nginx:latest.
+ports: Mapeamento de portas. Neste caso, a porta 8080 da máquina host será mapeada para a porta 80 do contêiner.
+volumes: Monta diretórios do host dentro do contêiner. Aqui, estamos mapeando o diretório ./html para o diretório /usr/share/nginx/html no contêiner.
+networks: Define as redes em que este serviço está inserido. Serviços na mesma rede podem se comunicar.
+database: Um segundo serviço que usa a imagem postgres:alpine.
+environment: Define variáveis de ambiente, como usuário e senha do PostgreSQL.
+volumes: Monta um volume persistente para armazenar os dados do banco de dados, permitindo que os dados sobrevivam ao reinício do contêiner.
+networks: Define redes personalizadas para que os contêineres possam se comunicar.
+volumes: Define volumes persistentes que podem ser usados pelos contêineres.
+Benefícios do Docker Compose:
+Automatiza a configuração de múltiplos contêineres.
+Isolamento: Cada serviço roda em seu próprio contêiner.
+Escalabilidade: Fácil de escalar serviços com o comando docker-compose up --scale.
+Ambientes replicáveis: Facilita a criação de ambientes consistentes para desenvolvimento, teste e produção.
+
+
+
+
+
+Exemplo pratico:
+
+Aqui estão alguns exemplos de arquivos docker-compose.yml com diferentes configurações, 
+dependendo do tipo de aplicação e do que você deseja implementar:
+
+1. Exemplo básico: Aplicação com NGINX e PostgreSQL
+Esse exemplo configura um servidor web (NGINX) e um banco de dados (PostgreSQL).
+
+version: '3'
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - ./html:/usr/share/nginx/html
+    networks:
+      - app-network
+
+  database:
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydb
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  db-data:
+
+Esse arquivo define dois serviços:
+
+web: Um servidor NGINX que serve conteúdo da pasta ./html.
+database: Um banco de dados PostgreSQL, onde as credenciais são configuradas com variáveis de ambiente.
+Ambos os serviços compartilham uma rede chamada app-network para se comunicarem entre si.
+O volume db-data garante que os dados do PostgreSQL sejam persistentes mesmo se o contêiner for removido.
+
+
+
+
+
+
+2. Exemplo com aplicação Node.js e MongoDB
+Esse exemplo é útil para uma aplicação Node.js que se conecta a um banco de dados MongoDB.
+
+
+version: '3'
+services:
+  nodeapp:
+    image: node:14
+    working_dir: /app
+    volumes:
+      - ./app:/app
+    command: npm start
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo:4.2
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  mongo-data:
+
+
+nodeapp: Um serviço que executa uma aplicação Node.js. O código da aplicação está na pasta local ./app, que é montada no contêiner.
+mongo: Um serviço que usa o MongoDB, com armazenamento persistente configurado no volume mongo-data.
+depends_on: Isso garante que o serviço mongo seja iniciado antes do nodeapp, pois a aplicação depende do banco de dados.
+
+
+
+
+
+
+
+
+
+3. Exemplo de WordPress e MySQL
+Esse é um exemplo para rodar o WordPress com um banco de dados MySQL.
+
+
+version: '3.1'
+services:
+  wordpress:
+    image: wordpress:latest
+    ports:
+      - "8000:80"
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: exampleuser
+      WORDPRESS_DB_PASSWORD: examplepass
+      WORDPRESS_DB_NAME: exampledb
+    volumes:
+      - wordpress-data:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_ROOT_PASSWORD: rootpassword
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  wordpress-data:
+  db-data:
+
+
+
+wordpress: Executa a última versão do WordPress. Conecta-se ao banco de dados MySQL, cujas credenciais são passadas como variáveis de ambiente.
+db: Um banco de dados MySQL que armazena os dados da aplicação WordPress.
+Usa a rede app-network para permitir a comunicação entre os serviços.
+Os volumes wordpress-data e db-data garantem que os dados sejam persistentes.
+4. Exemplo com Redis e aplicação Python Flask
+Esse exemplo mostra como rodar uma aplicação Flask (Python) que se conecta a um cache Redis.
+
+
+
+
+
+version: '3'
+services:
+  flask-app:
+    build: ./flask-app
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./flask-app:/app
+    depends_on:
+      - redis
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+
+
+flask-app: Define um serviço que constrói uma aplicação Flask a partir do diretório ./flask-app. O código da aplicação é montado no contêiner.
+redis: Um serviço que usa a imagem Redis para ser usado como cache pela aplicação Flask.
+depends_on: Garante que o Redis seja iniciado antes da aplicação Flask.
+
+
+
+
+
+
+
+
+
+
+
+5. Exemplo com múltiplas instâncias de um serviço (escalabilidade)
+Se você quiser escalar um serviço (por exemplo, executar várias instâncias de um servidor web), você pode usar a opção scale.
+
+
+version: '3'
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+    deploy:
+      replicas: 3
+
+networks:
+  app-network:
+
+
+O serviço web terá 3 réplicas (ou contêineres) rodando simultaneamente.
+A funcionalidade de deploy.replicas é mais utilizada em cenários de orquestração (como Docker Swarm ou Kubernetes), mas pode ser útil em alguns cenários com Docker Compose também.
+
+
+
+
+
+Comandos úteis:
+Iniciar os serviços: docker-compose up
+Iniciar os serviços em segundo plano: docker-compose up -d
+Escalar um serviço: docker-compose up --scale <service>=<number>
+Parar os serviços: docker-compose down
+
+
+
+docs.docker.com
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+https://github.com/Xperaz/inception-42?tab=readme-ov-file:
+
+
+
+O que é um LEMP Stack?
+Um LEMP Stack é um conjunto de software usado para hospedar sites e aplicativos web. O nome "LEMP" é um acrônimo que representa as tecnologias que fazem parte desse stack:
+
+L: Linux - Sistema operacional
+E: Nginx (pronunciado "Engine X") - Servidor web
+M: MariaDB - Sistema de banco de dados (um fork do MySQL)
+P: PHP - Linguagem de programação para o lado do servidor (server-side scripting language)
+Componentes do LEMP Stack:
+Linux (L):
+
+O sistema operacional de código aberto que serve de base para todos os outros componentes. Ele é altamente estável, 
+seguro e popular para servidores web. Qualquer distribuição Linux pode ser usada, como Ubuntu, CentOS ou Debian.
+Nginx (E):
+
+Nginx é um servidor web de alto desempenho, conhecido por sua velocidade e eficiência no gerenciamento de conexões simultâneas. 
+Ele serve para entregar conteúdo estático (como arquivos HTML, CSS, imagens, etc.) e também pode funcionar como um proxy reverso para servir 
+conteúdo dinâmico gerado por PHP, entre outros.
+Diferente de outros servidores web como o Apache, o Nginx utiliza um modelo de evento assíncrono, o que o torna muito eficiente em termos de recursos e escalabilidade.
+MariaDB (M):
+
+MariaDB é um sistema de banco de dados relacional de código aberto que armazena os dados de um site ou aplicativo web. É uma bifurcação (fork) do MySQL, 
+e é conhecido por ser rápido, seguro e confiável.
+Ele é usado para armazenar e recuperar dados, como usuários, postagens, comentários, configurações de sites, etc.
+PHP (P):
+
+PHP é uma linguagem de script do lado do servidor que processa as requisições dinâmicas. Por exemplo, quando um usuário envia um formulário, 
+o PHP pode processar esses dados, interagir com o banco de dados (MariaDB) e gerar uma página HTML dinâmica.
+O Nginx, por si só, não é capaz de processar código PHP diretamente, então normalmente o Nginx trabalha em conjunto com o PHP-FPM (FastCGI Process Manager) 
+para gerenciar as execuções do PHP.
+Como os Componentes Interagem?
+Cada componente do LEMP Stack tem uma função específica e se comunica com os outros para fornecer uma experiência web completa:
+
+Linux é a base sobre a qual todos os outros serviços funcionam.
+Nginx recebe as requisições dos usuários e, dependendo do tipo de conteúdo (estático ou dinâmico), pode servir diretamente ou repassar a requisição para o PHP.
+PHP processa o código dinâmico, como consultas ao banco de dados, e pode recuperar ou armazenar dados no MariaDB.
+MariaDB armazena os dados e os envia de volta para o PHP quando solicitado, permitindo que páginas dinâmicas sejam geradas com base nas informações armazenadas.
+Exemplo de Funcionamento:
+O usuário acessa um site (por exemplo, www.exemplo.com).
+O Nginx recebe a requisição e verifica se é um arquivo estático (por exemplo, uma imagem, HTML ou CSS). Se for um arquivo estático, ele serve diretamente.
+Se a requisição for para uma página dinâmica (por exemplo, um post de blog), o Nginx passa a requisição para o PHP-FPM, que executa o código PHP.
+O PHP pode fazer consultas ao MariaDB para obter ou armazenar dados (por exemplo, informações de um post de blog ou dados de um formulário).
+O PHP gera uma página HTML dinâmica com os dados recuperados do banco de dados e envia essa página de volta ao Nginx, que então entrega a resposta final para o usuário.
+Vantagens do LEMP Stack:
+Desempenho: Nginx é muito eficiente em gerenciar grandes quantidades de conexões simultâneas.
+Flexibilidade: Pode ser usado para uma variedade de sites e aplicações, desde blogs simples até plataformas de e-commerce complexas.
+Escalabilidade: O LEMP Stack é fácil de escalar, seja aumentando os recursos do servidor ou distribuindo a carga entre múltiplos servidores.
+Custo-benefício: Como tudo é de código aberto, você não precisa pagar por licenças caras.
+Resumo:
+O LEMP Stack é uma combinação poderosa e popular de tecnologias que permitem a criação e o gerenciamento de sites e aplicativos web. Ele oferece uma solução leve, escalável 
+e de alto desempenho, ideal para aqueles que buscam eficiência e flexibilidade.
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+nginx
+🔐 SSL / TLS
+
+1. Certificado do Servidor (Server Certificate):
+É público: O certificado do servidor contém uma chave pública e outras informações importantes, como o nome do domínio, a autoridade certificadora que emitiu o certificado, as datas de validade, etc.
+Enviado para o cliente: Quando um cliente (como um navegador web) se conecta ao servidor usando HTTPS, o servidor envia esse certificado ao cliente como parte do processo de estabelecimento da conexão segura (chamado de handshake).
+Autenticação: O cliente usa o certificado para verificar se está realmente se conectando ao servidor correto. O cliente verifica se o certificado foi emitido por uma autoridade certificadora confiável 
+e se ele é válido (não expirou, não foi revogado, etc.).
+
+2. Chave Privada (Private Key):
+É privada e deve ser mantida em segredo: A chave privada é um arquivo muito importante e deve ser mantido em segredo. Ela é usada para descriptografar 
+dados que o cliente envia ao servidor, além de assinar digitalmente o certificado do servidor.
+Acessibilidade: A chave privada deve ser armazenada em um arquivo no servidor com permissões restritas, de modo que apenas o processo mestre do Nginx 
+(ou o processo que executa o servidor web) tenha acesso a ela. É fundamental que a chave privada seja bem protegida, porque se alguém conseguir acessá-la, 
+poderá decifrar o tráfego criptografado entre o servidor e o cliente.
+Configuração no Nginx: No arquivo de configuração do Nginx (nginx.conf ou um arquivo de configuração de site específico), é especificado o caminho 
+para o arquivo da chave privada usando a diretiva ssl_certificate_key.
+
+Processo de Conexão HTTPS (Handshake SSL/TLS):
+Cliente se conecta ao servidor: O navegador (cliente) envia uma solicitação ao servidor, indicando que deseja estabelecer uma conexão segura (HTTPS).
+O servidor envia seu certificado: O servidor responde enviando o seu certificado SSL/TLS para o cliente.
+O cliente verifica o certificado: O cliente verifica se o certificado é válido (assinado por uma autoridade confiável, data de validade, etc.). 
+Se o certificado for válido, o cliente continua o processo.
+Troca de chaves: Em alguns tipos de criptografia, o servidor usa sua chave privada para assinar certos dados, permitindo que o cliente gere uma chave secreta compartilhada. 
+O cliente envia dados criptografados que só o servidor pode descriptografar usando a chave privada.
+Sessão segura estabelecida: Depois que a chave secreta compartilhada é negociada, tanto o servidor quanto o cliente usam essa chave para criptografar 
+e descriptografar o resto da comunicação durante a sessão.
+
+
+
+Resumo:
+O certificado público do servidor é compartilhado com os clientes e serve para autenticar o servidor.
+A chave privada é mantida em segredo e apenas o servidor deve ter acesso a ela. O Nginx precisa dessa chave para criptografar e descriptografar 
+o tráfego HTTPS de maneira segura.
+Se um atacante conseguir acessar a chave privada, ele poderia interceptar e descriptografar a comunicação entre o servidor e o cliente, 
+comprometendo a segurança. Por isso, é essencial manter a chave privada bem protegida e restrita.
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+mariadb
+
+1. MariaDB Server e o Diretório de Dados
+MariaDB Server é o software responsável por gerenciar o acesso ao diretório de dados do MariaDB. Esse diretório contém todos os bancos de dados e tabelas 
+que o servidor de banco de dados usa para armazenar informações.
+Quando o MariaDB Server é iniciado, ele começa a ouvir por conexões de rede de programas clientes, ou seja, ele aguarda conexões de clientes 
+(como ferramentas ou aplicações) para poder gerenciar o acesso aos bancos de dados em nome desses clientes.
+
+
+2. mysqld - O Binário do MariaDB Server
+mysqld é o binário (o programa executável) que realmente executa o servidor MariaDB. Ele é o componente principal que gerencia as requisições dos clientes, 
+faz o processamento de consultas, gerencia transações e manipula os dados dos bancos de dados.
+Em resumo: mysqld é o "coração" do servidor MariaDB, o processo principal que faz o servidor funcionar.
+
+
+3. mysqld_safe - Iniciando o Servidor de Forma Segura
+mysqld_safe é uma ferramenta auxiliar que serve para iniciar o servidor mysqld em sistemas Unix/Linux de maneira mais segura.
+Ele adiciona funcionalidades de segurança que tornam a operação do servidor mais robusta, como:
+Reiniciar o servidor automaticamente se houver algum erro inesperado (por exemplo, se o servidor falhar por algum motivo).
+Registrar informações de erro e runtime em um arquivo de log, permitindo que você monitore problemas que ocorreram enquanto o servidor estava rodando.
+Então, ao invés de apenas rodar mysqld diretamente, é recomendado usar mysqld_safe para ter essas camadas adicionais de proteção e monitoramento.
+
+
+4. mysql_install_db - Inicializando o Diretório de Dados
+mysql_install_db é um script usado para inicializar o diretório de dados do MariaDB.
+Esse script cria as tabelas de sistema necessárias para o funcionamento do servidor, se elas ainda não existirem. As tabelas de sistema são criadas 
+no banco de dados chamado mysql, e elas armazenam informações sobre usuários, permissões, e outras configurações do sistema.
+
+Em outras palavras, esse comando configura o ambiente inicial do servidor MariaDB, criando as tabelas essenciais que o servidor precisa para operar corretamente.
+
+Por que isso é importante?
+
+Antes de você poder usar o MariaDB, é necessário inicializar o banco de dados e criar essas tabelas de sistema. 
+Isso é feito apenas uma vez na configuração inicial do servidor (geralmente na instalação).
+
+
+Resumo:
+
+
+MariaDB Server é responsável por gerenciar o acesso aos bancos de dados e tabelas.
+mysqld é o binário que executa o servidor MariaDB.
+mysqld_safe é uma forma mais segura de iniciar o servidor, oferecendo reinicialização automática e logs de erros.
+mysql_install_db inicializa o diretório de dados do MariaDB e cria as tabelas de sistema necessárias para que o servidor funcione corretamente.
+Esses componentes juntos garantem que o MariaDB funcione de maneira eficiente e segura, permitindo que você armazene e gerencie dados de maneira confiável.
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+WordPress
+
+
+1. WordPress
+O WordPress é um sistema de gerenciamento de conteúdo (CMS) amplamente utilizado para criar e gerenciar websites. 
+Ele é construído em PHP e usa um banco de dados MySQL (ou MariaDB) para armazenar informações, como posts, páginas, usuários, 
+configurações, etc. O WordPress é dinâmico, ou seja, ele gera páginas HTML sob demanda, com base no conteúdo armazenado no banco de dados.
+
+
+
+2. SSL Explained
+SSL (Secure Sockets Layer) é um protocolo de segurança que cria uma conexão criptografada entre o servidor web e o navegador do cliente, 
+garantindo que os dados transferidos entre eles permaneçam privados e seguros. SSL evoluiu para TLS (Transport Layer Security), 
+mas o termo SSL ainda é amplamente utilizado.
+
+Como funciona o SSL/TLS?
+Criptografia: O SSL/TLS criptografa a comunicação entre o servidor e o cliente (navegador), evitando que terceiros possam interceptar ou modificar os dados.
+Autenticação: O SSL também autentica o servidor, garantindo que o cliente está se conectando ao site legítimo, e não a um impostor.
+Integridade dos dados: Ele garante que os dados não sejam alterados durante a transmissão.
+Quando um site usa HTTPS, significa que a comunicação entre o navegador do usuário e o servidor web é segura e criptografada.
+
+
+
+3. PHP-FPM e a Interação com Nginx
+O PHP-FPM (PHP-FastCGI Process Manager) é uma maneira eficiente de processar scripts PHP com o Nginx, que não é capaz de processar PHP diretamente como o Apache.
+
+Diferença entre Nginx e Apache:
+Apache pode interpretar PHP diretamente através de módulos (como mod_php), mas o Nginx não pode fazer isso. 
+O Nginx serve apenas o conteúdo estático (HTML, imagens, etc.), e para processar conteúdo dinâmico como PHP, ele precisa delegar essa tarefa a outro serviço.
+
+Como o PHP-FPM funciona:
+Nginx recebe uma requisição HTTP de um cliente (usuário).
+Se a requisição for para um arquivo PHP, o Nginx passa a requisição para o PHP-FPM usando o protocolo FastCGI.
+PHP-FPM interpreta o código PHP, executa o script e retorna o resultado para o Nginx.
+O Nginx, então, envia a resposta para o cliente (usuário).
+O PHP-FPM pode ser configurado para escutar requisições por soquetes Unix ou soquetes TCP, sendo o último mais comum em ambientes distribuídos.
+
+O que é FastCGI?
+FastCGI é uma versão otimizada do CGI (Common Gateway Interface). Ele resolve algumas das limitações do CGI tradicional, 
+que cria um novo processo para cada requisição. O FastCGI usa processos persistentes, o que significa que um processo pode lidar com várias requisições ao longo do tempo, economizando recursos e melhorando a performance.
+
+
+
+4. CGI (Common Gateway Interface)
+CGI é um padrão que permite a interação entre um servidor web (como Apache ou Nginx) e linguagens de programação como PHP ou Python. 
+Quando um cliente solicita uma página dinâmica (por exemplo, um script PHP ou Python), o servidor web não sabe como processá-la diretamente. 
+Portanto, ele invoca um interpretador de scripts (PHP, Python, etc.) através do CGI.
+
+Exemplo: Quando você acessa um site WordPress, o Nginx ou Apache não pode processar o código PHP diretamente. 
+Ele passa a requisição para o interpretador PHP (via CGI), que executa o script e retorna o resultado ao servidor, que por sua vez o envia para o cliente.
+
+Limitações do CGI:
+Processos por requisição: O CGI cria um novo processo para cada requisição. Isso significa que para cada novo pedido, o servidor cria um processo do zero, 
+o que pode ser ineficiente e consumir muitos recursos, especialmente em sites com muito tráfego.
+
+Desempenho: Como os processos são criados e destruídos a cada requisição, a performance pode ser afetada quando o servidor precisa lidar com muitas requisições simultâneas.
+
+
+
+
+5. FastCGI: A Evolução do CGI
+FastCGI surgiu como uma solução para os problemas de desempenho do CGI tradicional. Ao invés de criar um novo processo para cada requisição, 
+o FastCGI permite que um processo persistente seja usado para lidar com múltiplas requisições, o que economiza recursos e melhora a performance do servidor.
+
+Como o FastCGI funciona: Em vez de criar um novo processo para cada requisição, o FastCGI mantém processos em execução e reutiliza-os para lidar 
+com várias requisições ao longo do tempo.
+Separação do servidor web e PHP: O FastCGI também permite separar o servidor web (Nginx, Apache) do processamento PHP, utilizando uma comunicação 
+entre eles via soquetes Unix ou soquetes TCP. Isso é chamado de WAS (Web Application Server), onde o Nginx atua como servidor web e o PHP-FPM como servidor de aplicação.
+
+
+Resumo:
+
+WordPress é um CMS que usa PHP e MySQL para gerenciar conteúdo dinâmico em sites.
+
+SSL é um protocolo de segurança para criptografar e autenticar as comunicações entre o servidor e o cliente.
+
+PHP-FPM é um gerenciador de processos para PHP que trabalha com o Nginx para processar scripts PHP usando o protocolo FastCGI.
+
+CGI é uma tecnologia mais antiga que criava um novo processo para cada requisição, enquanto FastCGI permite a reutilização de processos, melhorando a performance.
+
+O FastCGI separa o servidor web do processamento PHP, permitindo uma maior escalabilidade e eficiência no manuseio de múltiplas requisições simultâneas.
+
+Isso explica como a infraestrutura de servidor web moderna funciona, especialmente em ambientes que utilizam o Nginx, PHP-FPM e FastCGI para lidar com sites dinâmicos e seguros.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
