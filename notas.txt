@@ -523,3 +523,101 @@ Isso explica como a infraestrutura de servidor web moderna funciona, especialmen
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+
+
+
+INSTALAR UBUNTU MAQUINA VIRTUAL
+
+Para instalar o Ubuntu em uma máquina com Windows usando uma máquina virtual (VM), você pode utilizar softwares como VirtualBox 
+ou VMware Workstation Player para criar uma máquina virtual que rodará o Ubuntu dentro do Windows.
+
+Vou te guiar pelo processo usando o VirtualBox, que é gratuito e bastante popular.
+
+Passos para instalar o Ubuntu no Windows usando VirtualBox:
+
+1. Baixar o Ubuntu
+Vá até o site oficial do Ubuntu: https://ubuntu.com/download/desktop.
+Baixe a imagem ISO mais recente do Ubuntu Desktop. A versão mais comum é a LTS (Long Term Support), que oferece suporte por 5 anos.
+
+
+2. Instalar o VirtualBox
+Acesse o site do VirtualBox: https://www.virtualbox.org/.
+Baixe a versão para Windows e instale o VirtualBox seguindo o assistente de instalação.
+O VirtualBox também instalará os extensões de rede e drivers necessários para que a VM funcione corretamente.
+
+
+3. Criar uma nova máquina virtual no VirtualBox
+Abrir o VirtualBox.
+
+Criar uma nova máquina virtual:
+
+Clique em "Novo" (ou "New").
+No campo "Nome", coloque um nome para sua máquina virtual (por exemplo, "Ubuntu").
+Em "Tipo", selecione Linux e em "Versão", selecione Ubuntu (64-bit) (ou a versão apropriada).
+Clique em "Próximo".
+Alocar memória (RAM):
+
+O Ubuntu requer pelo menos 2 GB de RAM, mas o recomendado é alocar 4 GB ou mais, se sua máquina permitir. Use o controle deslizante para definir a quantidade de memória.
+Clique em "Próximo".
+Criar um disco rígido virtual:
+
+Selecione a opção "Criar um disco rígido virtual agora" e clique em "Criar".
+Escolha o tipo de arquivo de disco rígido. VDI (VirtualBox Disk Image) é o mais comum.
+Tamanho dinâmico: Isso significa que o disco aumentará de tamanho conforme você adicionar dados (até o limite que você definir).
+Defina o tamanho do disco virtual. Para uma instalação básica do Ubuntu, 20 GB é suficiente, mas você pode aumentar se precisar de mais espaço.
+Clique em "Criar".
+
+
+4. Configurar a máquina virtual
+Configurar a unidade de CD/DVD (onde estará o Ubuntu ISO):
+Com a máquina virtual selecionada, clique em "Configurações" (ícone de engrenagem).
+Vá para a aba "Sistema" e, em "Placa-mãe", verifique se a ordem de inicialização tem o CD/DVD antes do Disco Rígido.
+No menu à esquerda, clique em "Armazenamento".
+Em "Controladora: IDE", clique em "Vazio" e, ao lado de "Drive Óptico", clique no ícone de disco e selecione "Escolher um arquivo de disco".
+Navegue até a ISO do Ubuntu que você baixou anteriormente e selecione-a.
+Clique em "OK" para salvar as configurações.
+
+
+5. Iniciar a instalação do Ubuntu
+Iniciar a máquina virtual:
+Com a máquina virtual selecionada, clique em "Iniciar".
+
+
+
+Instalar o Ubuntu:
+A máquina virtual começará a inicializar a partir da ISO do Ubuntu. Quando o menu do instalador aparecer, selecione "Install Ubuntu".
+Escolha o idioma e siga as instruções do instalador.
+
+Quando for solicitado, escolha a opção de instalação "Instalar Ubuntu ao lado do Windows" se você desejar criar um sistema dual-boot 
+(Ubuntu e Windows na mesma máquina). Caso deseje instalar apenas no VirtualBox, escolha a opção "Instalação normal".
+
+Configurações adicionais:
+Escolha seu fuso horário.
+Configure seu teclado (geralmente, o layout padrão é o que você usa, como "Português (Brasil)").
+Defina um usuário e senha para o Ubuntu.
+A instalação começará e pode levar algum tempo. Após a instalação, o sistema solicitará a reinicialização.
+
+
+6. Finalizar a instalação
+Quando o Ubuntu for reiniciado, você verá uma tela inicial pedindo para remover o disco de instalação (ou seja, a ISO montada). 
+No VirtualBox, você pode simplesmente desmontar o arquivo ISO em Armazenamento (deixe a unidade vazia).
+O Ubuntu irá iniciar e você poderá se logar com as credenciais que criou durante a instalação.
+
+
+7. Instalar as "Guest Additions" (opcional, mas recomendado)
+As Guest Additions são ferramentas que melhoram a integração entre o Ubuntu e o VirtualBox, como a capacidade de compartilhar pastas, 
+melhorar o desempenho gráfico e permitir o redimensionamento automático da tela.
+
+Com a máquina virtual do Ubuntu em execução, no menu do VirtualBox, clique em Dispositivos > Inserir imagem de CD dos "Guest Additions".
+Siga as instruções no Ubuntu para instalar o software. Você precisará de uma conexão à internet e provavelmente de permissões administrativas (senha do usuário).
+Após a instalação, reinicie o Ubuntu.
+Agora, você deve ter o Ubuntu rodando em uma máquina virtual no seu sistema Windows, funcionando bem e com uma experiência de usuário aprimorada!
+
+Dicas:
+
+Alocação de Recursos: Certifique-se de que sua máquina física tem recursos suficientes (RAM e CPU) 
+para rodar a VM de forma confortável. Se a máquina estiver lenta, considere ajustar a alocação de recursos na configuração do VirtualBox.
+
+Snapshots: O VirtualBox permite que você crie "snapshots", que são basicamente cópias de segurança do estado da VM. 
+Isso é útil se você quiser "voltar no tempo" em algum momento.
+
