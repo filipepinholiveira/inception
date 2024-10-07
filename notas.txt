@@ -1,4 +1,35 @@
 
+RESUMO: 
+
+O mecanismo Docker é o componente principal do Docker. É uma ferramenta leve de tempo de execução e empacotamento que agrupa seu aplicativo 
+e suas dependências em um único pacote, chamado contêiner. 
+
+O mecanismo Docker inclui o daemon Docker, que é um processo em segundo plano que gerencia contêineres Docker, e o cliente Docker, 
+que é uma ferramenta de linha de comando que permite interagir com o daemon Docker.
+
+Veja como funciona o mecanismo Docker:
+
+    Você escreve um Dockerfile, que é um arquivo de texto que contém as instruções para construir uma imagem Docker. 
+    Uma imagem Docker é um pacote executável leve e independente que inclui tudo o que é necessário para executar um software, 
+    incluindo o código do aplicativo, bibliotecas, dependências e tempo de execução.
+    Você usa o cliente Docker para construir a imagem Docker executando o comando docker build e especificando o caminho para o Dockerfile. 
+    O daemon Docker lê as instruções no Dockerfile e constrói a imagem.
+    Depois que a imagem for criada, você poderá usar o cliente Docker para executar a imagem como um contêiner usando o comando docker run. 
+    O daemon Docker cria um contêiner a partir da imagem e executa o aplicativo dentro do contêiner.
+    O mecanismo Docker fornece um ambiente seguro e isolado para a execução do aplicativo e também gerencia recursos como CPU, 
+    memória e armazenamento para o contêiner.
+    Você pode usar o cliente Docker para visualizar, parar e gerenciar os contêineres em execução no seu sistema. 
+    Você também pode usar o cliente Docker para enviar a imagem do Docker para um registro, como o Docker Hub, para que ela possa 
+    ser compartilhada com outras pessoas.
+
+Ícone Validada pela comunidade
+
+
+
+
+
+
+
 
 O arquivo docker-compose.yml é usado pelo Docker Compose para definir e gerenciar vários contêineres Docker em um ambiente multi-conteiner. 
 Ele permite que você configure e execute aplicações distribuídas de forma simples, especificando como cada contêiner (ou serviço) deve ser configurado e executado, 
