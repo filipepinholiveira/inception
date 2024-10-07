@@ -22,11 +22,663 @@ Veja como funciona o mecanismo Docker:
     Você também pode usar o cliente Docker para enviar a imagem do Docker para um registro, como o Docker Hub, para que ela possa 
     ser compartilhada com outras pessoas.
 
-Ícone Validada pela comunidade
 
 
 
 
+
+Agora Depois que entendemos o que é o Docker e como ele funciona agora, vamos apresentá-lo ao arquivo Dockerfile e Docker-compose.
+
+    Um arquivo Dockerfile é um arquivo de texto que contém as instruções para a construção de uma imagem Docker. 
+    Ele especifica a imagem base a ser usada, as dependências e o software a instalar e quaisquer outras configurações 
+    ou scripts necessários para configurar o ambiente para a execução do aplicativo.
+
+    Um arquivo Docker Compose é um arquivo YAML que define como vários contêineres Docker devem ser configurados e executados. Ele permite que você defina os serviços que compõem seu aplicativo e, em seguida, inicie e interrompa todos os contêineres com um único comando.
+
+Aqui estão algumas diferenças importantes entre um arquivo Dockerfile e um arquivo Docker Compose:
+
+    Finalidade: Um Dockerfile é usado para criar uma única imagem Docker, enquanto um arquivo Docker Compose é usado para definir e executar vários contêineres Docker como um único aplicativo.
+    Formato: Um Dockerfile é um arquivo de texto simples com um formato e sintaxe específicos, enquanto um arquivo Docker Compose é escrito em YAML.
+    Escopo: Um Dockerfile está focado na construção de uma única imagem, enquanto um arquivo Docker Compose é focado em definir e executar vários contêineres como um único aplicativo.
+    Comandos: Um Dockerfile usa comandos específicos, como FROM,, , - A , de cima para o que sobre o que sobre o que sobre, , sobre o que sobre o que sobre, , sobre o RUN, e CMD, para definir as instruções para construir a imagem. Um arquivo Docker Compose usa comandos diferentes, como services,, , - A , de cima para o que sobre o que sobre o que sobre, , sobre o que sobre o que sobre, , sobre o volumes, e networks, para definir os recipientes e como eles devem ser configurados e executados.
+
+    Aqui está uma breve explicação de algumas das chaves mencionadas acima.
+
+    Este FROMé um comando que é usado em um Dockerfile para especificar a imagem base a usar como ponto de partida para a construção da imagem Docker. A imagem base fornece as camadas fundamentais para a imagem e você pode adicionar camadas adicionais em cima dela para personalizar a imagem para suas necessidades específicas.
+    Este RUNé um comando que é usado em um Dockerfile para executar um comando no terminal do contêiner. É normalmente usado para instalar software ou bibliotecas que são necessárias para o aplicativo.
+    Este CMDé um comando que é usado em um Dockerfile para especificar o comando padrão que deve ser executado quando um contêiner é iniciado a partir da imagem. Ele é usado para especificar o comando principal que o contêiner deve executar quando ele é iniciado.
+    Esta servicesé uma chave em um arquivo Docker Compose que é usado para definir os serviços que compõem o seu aplicativo. Um serviço é um contêiner que executa um aplicativo ou componente específico do seu aplicativo.
+    Esta volumesé uma chave em um arquivo Docker Compose que é usado para definir o armazenamento persistente para o seu aplicativo. Um volume é um pedaço de armazenamento que é anexado a um contêiner e é usado para armazenar dados que devem persistir mesmo quando o recipiente é parado ou removido.
+    Esta networksé uma chave em um arquivo Docker Compose que é usado para definir as redes que os contêineres devem ser conectados à rede A é uma rede virtual que é usada para conectar contêineres e permitir que eles se comuniquem entre si.
+
+Quais são os comandos mais comuns usados no docker?
+
+    docker build: Usado para construir uma imagem do Docker a partir de um Dockerfile.
+    docker run: Usado para executar um contêiner Docker baseado em uma imagem Docker.
+    docker pull: Usado para puxar uma imagem Docker de um registro, como o Docker Hub.
+    docker push: Usado para empurrar uma imagem Docker para um registro.
+    docker ps: Usado para listar os contêineres Docker em execução em um sistema.
+    docker stop: Usado para parar um recipiente Docker em execução.
+    docker rm: Usado para remover um recipiente Docker.
+    docker rmi: Usado para remover uma imagem do Docker.
+    docker exec: Usado para executar um comando em um contêiner Docker em execução.
+    docker logs: Usado para visualizar os logs para um recipiente Docker.
+
+
+
+
+
+COMPOSE DOCKER
+
+O Docker Compose é uma ferramenta para definir e executar aplicativos Docker multi-container. 
+Com o Compose, você usa um arquivo YAML para configurar os serviços do aplicativo. 
+Em seguida, usando um único comando, você pode criar e iniciar todos os serviços a partir de sua configuração.
+
+O uso do Docker Compose pode simplificar o processo de gerenciamento de aplicativos de vários contêineres, 
+permitindo que você defina todos os seus serviços em um único local e inicie e interrompa-os facilmente. 
+Também facilita a escalabilidade do aplicativo, permitindo que você aumente ou diminua o número de réplicas de um serviço.
+
+
+Quais são os comandos mais comuns usados no docker-compose?
+
+    up: Criar e iniciar recipientes
+    downParar e remover contêineres, redes, imagens e volumes
+    start: Iniciar os contentores existentes
+    stop: Pare de em funcionamento de contentores
+    restart: Reinicialização de contêineres de corrida
+    build: Construir imagens
+    ps: Lista de recipientes
+    logs: Ver a saída dos contentores
+    exec: Executar um comando em um contêiner em execução
+    pull: Puxe imagens de um registro
+    push: Empurre imagens para um registro
+
+
+
+
+O que são DOCKER NETWORKS
+
+No Docker, uma rede é uma rede de software virtual que conecta contêineres Docker. 
+Ele permite que os contêineres se comuniquem entre si e com o mundo exterior, e fornece uma camada adicional 
+de abstração sobre a infraestrutura de rede subjacente.
+
+Existem vários tipos de redes que você pode criar no Docker, incluindo:
+
+    Ponte: Uma rede de ponte é o tipo de rede padrão quando você instala o Docker. 
+    Ele permite que os contêineres se comuniquem entre si e com a máquina hospedeira, mas não fornece acesso ao mundo exterior.
+    Host: Uma rede de host usa a pilha de rede da máquina host e não fornece isolamento entre o host e o contêiner.
+    Sobreposição: Uma rede de sobreposição permite que contêineres executados em diferentes hosts do Docker se comuniquem entre si.
+    Macvlan: Uma rede Macvlan permite que um contêiner tenha seu próprio endereço IP na mesma sub-rede que a máquina host.
+
+Você pode criar e gerenciar redes usando o docker network- Comando. Por exemplo, 
+para criar uma nova rede de pontes, você pode usar o seguinte comando:
+
+docker network create my-network
+
+    recursos para rede docker : https://www.youtube.com/watch?v-bKFMS5C4CG0
+
+
+O que são DOCKER VOLUMES
+
+No Docker, um volume é um local de armazenamento persistente que é usado para armazenar dados de um contêiner. 
+Os volumes são usados para persistir os dados de um contêiner mesmo após o estoque ser excluído e podem ser compartilhados entre os contêineres.
+
+Existem dois tipos de volumes no Docker:
+
+    Montagem vinculante: Uma montagem de ligação é um arquivo ou diretório na máquina host que é montado em um contêiner. 
+    Quaisquer alterações feitas na montagem de bind são refletidas na máquina host e em quaisquer outros contêineres 
+    que montam o mesmo arquivo ou diretório.
+    Volume nomeado: Um volume nomeado é um volume gerenciado que é criado e gerenciado pelo Docker. 
+    Ele é armazenado em um local específico na máquina host e não está vinculado a um arquivo ou diretório específico no host. 
+    Os volumes nomeados são úteis para armazenar dados que precisam ser compartilhados entre contêineres, 
+    pois podem ser facilmente conectados e desapegados de contêineres.
+
+Você pode criar e gerenciar volumes usando o docker volume- Comando. Por exemplo, para criar um novo volume nomeado, você pode usar o seguinte comando:
+
+docker volume create my-volume
+
+Para montar um volume em um recipiente, você pode usar o -vsinalizar ao iniciar o recipiente. Por exemplo:
+
+docker run -v my-volume:/var/lib/mysql mysql
+
+Este comando iniciará um contêiner executando o mysqlimagem e montar o my-volumeO volume em /var/lib/mysqldentro do recipiente. 
+Quaisquer dados gravados neste local no contêiner serão persistentes no volume, mesmo que o contêiner seja excluído.
+
+Você também pode usar o Docker Compose para criar e gerenciar volumes. Em um arquivo Compose, você pode definir um volume 
+e anexá-lo a um serviço. Por exemplo:
+
+version: '3'
+services:
+  db:
+    image: mysql
+    volumes:
+      - db-data:/var/lib/mysql
+volumes:
+  db-data:
+
+Este arquivo Compose define a db-datavolume e prende-o ao dbO serviço em /var/lib/mysql- A . (í a , , , , , í , . 
+Quaisquer dados gravados neste local no contêiner serão persistentes no volume.
+
+
+
+PARTE DE MANDATORY
+Mariadb (B)
+
+O MariaDB é um sistema de gerenciamento de banco de dados relacional livre e de código aberto (RDBMS) 
+que é amplamente utilizado como substituto do MySQL. Seu nome é uma homenagem à filha do desenvolvedor, Maria, 
+e é projetado para ser uma alternativa orientada para a comunidade para o MySQL, com foco na simplicidade, colaboração 
+e compatibilidade com outros sistemas de banco de dados.
+
+O MariaDB inclui vários recursos e melhorias adicionais em relação ao MySQL, incluindo melhor desempenho, 
+segurança aprimorada e suporte para novos mecanismos de armazenamento e tipos de dados. 
+Também é ativamente desenvolvido e apoiado por uma grande e ativa comunidade de usuários e desenvolvedores.
+
+    Parte da instalação:
+
+    PullTradução debian:buster(A nossa imagem base)
+    atualizar o nosso gerenciador de pacotes apt-get update -y
+    instalar o servidor mariadb apt-get install mariadb-server -y
+    ir para /etc/mysql/mariadb.conf.d/50-server.cnf e mudar a linha 28 de bind-address = 127.0.0.1para bind-address = 0.0.0.0
+    para qualquer rede pode se conectar ao nosso Mariadb
+    service mysql start
+    criar o nosso banco de dados e o nosso usuário e dar-lhe o acesso ao banco de dados, em seguida, FLUSH PRIVILEGES
+
+    scripts parte:
+
+#db_name = Database Name
+#db_user = User
+#db_pwd = User Password
+
+echo "CREATE DATABASE IF NOT EXISTS $db_name ;" > db1.sql
+echo "CREATE USER IF NOT EXISTS '$db_user'@'%' IDENTIFIED BY '$db_pwd' ;" >> db1.sql
+echo "GRANT ALL PRIVILEGES ON $db_name.* TO '$db_user'@'%' ;" >> db1.sql
+echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '12345' ;" >> db1.sql
+echo "FLUSH PRIVILEGES;" >> db1.sql
+
+mysql < db1.sql
+
+para manter o contêiner funcionando, execute este comando em CMD no seu Dockerfile /usr/bin/mysqld_safe
+
+mysqld_safeé normalmente usado para iniciar o servidor MySQL quando o sistema está inicializando, e também é usado para iniciar 
+e parar o servidor MySQL manualmente
+Wordpress (Palav
+
+WordPress é um sistema de gerenciamento de conteúdo (CMS) baseado em PHP e MySQL. 
+É uma plataforma de código aberto que é amplamente utilizada para a construção de sites, blogs e aplicativos. 
+Com o WordPress, os usuários podem facilmente criar e gerenciar seus próprios sites sem a necessidade de habilidades técnicas avançadas. 
+É conhecida por sua simplicidade e flexibilidade, tornando-se uma escolha popular para desenvolvedores iniciantes e experientes. 
+O WordPress tem uma grande comunidade de usuários e desenvolvedores que contribuem para a plataforma, 
+o que levou ao desenvolvimento de uma ampla gama de temas, plugins e outras ferramentas que podem ser usadas para 
+ampliar a funcionalidade dos sites WordPress.
+
+    Antes de mergulharmos na peça de instalação, você precisa saber sobre o fastCGI porque é bastante importador no nosso caso.
+
+Rápido de ?
+
+FastCGI (Fast Common Gateway Interface) é um protocolo que permite que servidores web se comuniquem com aplicativos da Web, 
+como scripts PHP. Ele é projetado para permitir que os servidores da Web executem scripts de uma maneira mais eficiente 
+do que os protocolos tradicionais CGI (Common Gateway Interface), que envolvem o início de um novo processo para executar cada script.
+
+PHP-FPM (FastCGI Process Manager) é uma implementação do protocolo FastCGI projetado especificamente para uso com PHP. 
+Ele funciona iniciando um conjunto de processos de trabalho que são responsáveis pela execução de scripts PHP. 
+Quando um servidor web recebe uma solicitação para um script PHP, ele passa a solicitação para um dos processos de trabalho, 
+que executa o script e retorna o resultado para o servidor web. Isso permite que os scripts PHP sejam executados de forma mais eficiente, 
+pois os processos de trabalho podem ser reutilizados para várias solicitações.
+
+O PHP-FPM é frequentemente usado como uma alternativa ao mod_php, que é um módulo Apache que incorpora 
+o interpretador PHP diretamente no servidor web Apache. O uso do PHP-FPM pode melhorar o desempenho 
+e a escalabilidade dos scripts PHP, pois permite que o servidor web e o PHP sejam executados em processos separados. 
+Ele também permite um controle mais retecido sobre o ambiente PHP, pois diferentes pools de processos de trabalho 
+podem ser configurados com configurações diferentes.
+
+    Parte da instalação:
+
+    puxar debian:buster(A nossa imagem base)
+    atualizar o nosso gerenciador de pacotes apt-get -y update& & & apt-get -y upgrade& & & apt update -y& & & apt upgrade -y
+    apt installphp-fpmphp-mysql -y& & & apt install curl -y
+
+O primeiro comando instala o php-fpmE a php-mysqlEmpacotos. php-fpm(FastCGI Process Manager) é uma implementação do FastCGI 
+que é usado para executar scripts PHP, e php-mysqlé uma extensão PHP que permite que o PHP se comunique com bancos de dados MySQL.
+
+O terceiro comando instala o curlpacote, que é uma ferramenta de linha de comando para transferir dados usando vários protocolos de rede, 
+incluindo HTTP, HTTPS e FTP.
+
+Minha fonte de informação https://developer.wordpress.org/cli/commands/core/
+
+    script parte:
+
+#!/bin/bash
+
+# create directory to use in nginx container later and also to setup the wordpress conf
+mkdir /var/www/
+mkdir /var/www/html
+
+cd /var/www/html
+
+# remove all the wordpress files if there is something from the volumes to install it again
+rm -rf *
+
+# The commands are for installing and using the WP-CLI tool.
+
+# downloads the WP-CLI PHAR (PHP Archive) file from the GitHub repository. The -O flag tells curl to save the file 
+with the same name as it has on the server.
+curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar 
+
+# makes the WP-CLI PHAR file executable.
+chmod +x wp-cli.phar 
+
+# moves the WP-CLI PHAR file to the /usr/local/bin directory, which is in the system's PATH, and renames it to wp. 
+This allows you to run the wp command from any directory
+mv wp-cli.phar /usr/local/bin/wp
+
+# downloads the latest version of WordPress to the current directory. 
+The --allow-root flag allows the command to be run as the root user, which is necessary 
+if you are logged in as the root user or if you are using WP-CLI with a system-level installation of WordPress.
+wp core download --allow-root
+
+mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
+
+# change the those lines in wp-config.php file to connect with database
+
+#line 23
+sed -i -r "s/database/$db_name/1"   wp-config.php
+#line 26
+sed -i -r "s/database_user/$db_user/1"  wp-config.php
+#line 29
+sed -i -r "s/passwod/$db_pwd/1"    wp-config.php
+
+#line 32
+sed -i -r "s/localhost/mariadb/1"    wp-config.php  (to connect with mariadb database)
+
+# installs WordPress and sets up the basic configuration for the site. The --url option specifies the URL of the site, 
+--title sets the site's title, --admin_user and --admin_password set the username and password for the site's administrator account, 
+and --admin_email sets the email address for the administrator. The --skip-email flag prevents WP-CLI from sending an email 
+to the administrator with the login details.
+wp core install --url=$DOMAIN_NAME/ --title=$WP_TITLE --admin_user=$WP_ADMIN_USR --admin_password=$WP_ADMIN_PWD --admin_email=$WP_ADMIN_EMAIL --skip-email --allow-root
+
+# creates a new user account with the specified username, email address, and password. 
+The --role option sets the user's role to author, which gives the user the ability to publish and manage their own posts.
+wp user create $WP_USR $WP_EMAIL --role=author --user_pass=$WP_PWD --allow-root
+
+# installs the Astra theme and activates it for the site. The --activate flag tells WP-CLI to make the theme the active theme for the site.
+wp theme install astra --activate --allow-root
+
+
+wp plugin install redis-cache --activate --allow-root
+
+
+# uses the sed command to modify the www.conf file in the /etc/php/7.3/fpm/pool.d directory. 
+The s/listen = \/run\/php\/php7.3-fpm.sock/listen = 9000/g command substitutes the value 9000 for /run/php/php7.3-fpm.sock throughout the file. 
+This changes the socket that PHP-FPM listens on from a Unix domain socket to a TCP port.
+sed -i 's/listen = \/run\/php\/php7.3-fpm.sock/listen = 9000/g' /etc/php/7.3/fpm/pool.d/www.conf
+
+# creates the /run/php directory, which is used by PHP-FPM to store Unix domain sockets.
+mkdir /run/php
+
+
+wp redis enable --allow-root
+
+
+# starts the PHP-FPM service in the foreground. The -F flag tells PHP-FPM to run in the foreground, rather than as a daemon in the background.
+/usr/sbin/php-fpm7.3 -F
+
+Nginx em
+
+O NGINX é um servidor web que também pode ser usado como proxy reverso, balanceador de carga e cache HTTP. 
+É conhecida por seu alto desempenho, estabilidade e baixo consumo de recursos. 
+O NGINX é frequentemente usado para lidar com solicitações do lado do servidor para aplicativos da Web 
+e também pode ser usado para veicular conteúdo estático, como imagens e arquivos JavaScript. 
+Além de seus recursos de servidor web, o NGINX pode ser configurado para lidar com outros tipos de protocolos de rede, 
+como Secure Sockets Layer (SSL) e Transport Layer Security (TLS). 
+É frequentemente usado em conjunto com outros softwares, como bancos de dados e sistemas de gerenciamento de conteúdo, 
+para criar aplicativos web robustos e escaláveis.
+
+    Antes de mergulharmos na peça de instalação, você precisa saber sobre o TLSv1.2 ou o TLSv1.3 porque é bastante importando no nosso caso.
+
+TLS (segurança da camada de transporte)
+
+O Transport Layer Security (TLS) é um protocolo de segurança usado para estabelecer uma comunicação segura entre duas partes na internet. 
+Ele é projetado para evitar escutas, adulteração e falsificação de mensagens e para fornecer autenticidade e integridade para dados transmitidos. 
+O TLS é usado para proteger uma ampla gama de aplicativos baseados na Internet, incluindo navegação na web, e-mail, 
+transferência de arquivos, redes privadas virtuais (VPNs) e sistemas de comunicação em tempo real.
+
+O TLS funciona usando criptografia de chave pública para estabelecer uma conexão segura entre duas partes. 
+Quando um cliente quer se comunicar com um servidor usando o TLS, o cliente e o servidor trocam uma série de mensagens 
+para estabelecer uma conexão segura. Este processo inclui a troca de certificados digitais e a negociação de chaves de encriptação. 
+Uma vez que a conexão é estabelecida, o cliente e o servidor podem se comunicar com segurança pela Internet.
+
+O TLS é o sucessor do protocolo Secure Sockets Layer (SSL), desenvolvido na década de 1990. O TLS é baseado em SSL, mas foi atualizado 
+para resolver uma série de vulnerabilidades de segurança que foram descobertas em SSL. O TLS é agora o padrão de fato 
+para comunicação segura na Internet e é usado por milhões de sites e aplicativos para proteger dados confidenciais.
+OpenSSL (Fos:)
+
+O OpenSSL é uma implementação de código aberto dos protocolos Secure Sockets Layer (SSL) e Transport Layer Security (TLS). 
+É uma ferramenta amplamente utilizada para trabalhar com SSL e TLS, e está disponível para a maioria dos sistemas operacionais.
+
+O OpenSSL pode ser usado para uma variedade de tarefas relacionadas ao SSL e TLS, incluindo:
+
+    Criar e gerenciar certificados SSL/TLS e chaves privadas
+    Configurar e configurar servidores habilitados para SSL/TLS
+    Conectando-se a servidores habilitados para SSL/TLS como cliente
+    Depuração de conexões SSL/TLS
+    Gerar e assinar certificados digitais
+
+O OpenSSL é frequentemente usado por administradores de sistemas e desenvolvedores para proteger a comunicação entre servidores e clientes, 
+ou para criar túneis seguros para transmissão de dados pela Internet. 
+Ele também é usado para criar conexões seguras e criptografadas para e-mail, transferência de arquivos e outros tipos de comunicação na Internet.
+
+    Parte da instalação:
+
+    puxar debian:buster(A nossa imagem base)
+    atualizar o nosso gerenciador de pacotes apt update -y& & & apt upgrade -y
+    apt install -y nginx& & & apt install openssl -yirá instalar o servidor web NGINX e a ferramenta OpenSSL.
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt -subj "/C=MO/L=KH/O=1337/OU=student/CN=[sahafid.1337.ma](http://sahafid.42.ma/)"
+
+Este comando gera um certificado SSL/TLS auto-assinado e uma chave privada usando o OpenSSL.
+
+O que é reqO comando é usado para gerar uma solicitação de assinatura de certificado (CSR) ou um certificado auto-assinado. 
+O que é -x509A opção diz ao OpenSSL para gerar um certificado autoassinado em vez de um CSR.
+
+O que é -nodesA opção diz ao OpenSSL para não criptografar a chave privada com uma senha. 
+Isso significa que a chave privada não será protegida por uma senha e será armazenada em texto simples. 
+Isso geralmente não é recomendado para ambientes de produção, pois pode tornar a chave mais vulnerável ao acesso não autorizado.
+
+O que é -daysOpção especifica o número de dias para os quais o certificado deve ser válido. 
+Neste caso, o certificado será válido por 365 dias (um ano).
+
+O que é -newkeyOpção especifica que uma nova chave privada deve ser gerada. 
+O que é rsa:2048O argumento diz ao OpenSSL para gerar uma chave RSA com um comprimento de 2048 bits.
+
+O que é -keyoutopção especifica o arquivo onde a chave privada deve ser armazenada, 
+e o -outA opção especifica o ficheiro onde o certificado deve ser armazenado.
+
+O que é -subjA opção especifica o assunto do certificado. 
+O assunto inclui informações sobre a organização para as quais o certificado será usado, 
+bem como informações sobre o servidor onde o certificado será instalado. 
+Neste caso, o sujeito inclui o país (C-MO), a localização (L-KH), a organização (O 1337), a unidade organizacional (OU-student) 
+e o nome comum (CN-sahafid.42.ma).
+
+Depois de executar este comando, um certificado SSL/TLS auto-assinado e uma chave privada serão gerados 
+e armazenados nos arquivos especificados. Em seguida, você pode usar esses arquivos para configurar um servidor NGINX 
+para usar criptografia SSL/TLS. Tenha em mente que os certificados auto-assinados não são confiáveis pela maioria dos navegadores da Web, 
+portanto, você normalmente precisará obter um certificado de uma autoridade de certificação confiável (CA) para uso em um ambiente de produção.
+
+server {
+
+# The server listens for incoming connections on port 443, which is the default port for HTTPS traffic. 
+The server listens for both IPv4 and IPv6 connections
+	listen 443 ssl;
+	listen [::]:443 ssl;
+
+# replace login with your own loggin
+	server_name www.login.42.fr login.42.fr;
+
+# The ssl_certificate and ssl_certificate_key directives specify the locations of the SSL/TLS certificate and private key, 
+respectively, that will be used to encrypt the traffic. The ssl_protocols directive specifies the TLS protocols that the server should support.
+	ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+	ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
+
+# We are using version 1.3 of TLS
+	ssl_protocols TLSv1.3;
+
+# The index directive specifies the default file that should be served when a client requests a directory on the server. 
+The root directive specifies the root directory that should be used to search for files.
+	index index.php;
+	root /var/www/html;
+
+# The location directive defines a block of configuration that applies to a specific location, which is specified using 
+a regular expression. In this case, the regular expression ~ [^/]\\.php(/|$) matches any request that ends in .php and is not preceded by a / character.
+
+	location ~ [^/]\\.php(/|$) {
+
+# The try_files directive attempts to serve the requested file, and if it does not exist, it will return a 404 error.
+        try_files $uri =404;
+
+#The fastcgi_pass directive passes the request to a FastCGI server for processing.
+        fastcgi_pass wordpress:9000;
+
+	# The include directive includes a file with FastCGI parameters.
+        include fastcgi_params;
+
+#The fastcgi_param directive sets a FastCGI parameter. The SCRIPT_FILENAME parameter specifies the path to the PHP script that should be executed.
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+
+}
+
+a versão limpa ?
+
+server {
+	listen 443 ssl;
+	listen [::]:443 ssl;
+
+	server_name www.login.1337.ma login.1337.ma;
+
+	ssl_certificate /etc/ssl/certs/nginx-selfsigned.crt;
+	ssl_certificate_key /etc/ssl/private/nginx-selfsigned.key;
+
+	ssl_protocols TLSv1.3;
+
+	index index.php;
+	root /var/www/html;
+
+	location ~ [^/]\\.php(/|$) {
+        try_files $uri =404;
+        fastcgi_pass wordpress:9000;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+}
+
+você vai copiar esta configuração para este arquivo /etc/nginx/sites-available/default
+
+para manter o contêiner em execução, você deve usar este comando nginx -g daemon off;
+
+O que é nginx -g daemon off;O comando é usado para iniciar o servidor web Nginx no primeiro plano e para desativar o modo daemon.
+
+Em Nginx, o daemonA diretiva é usada para ativar ou desativar o modo daemon, que determina como o processo Nginx é executado. 
+Quando o modo daemon está ativado, o processo Nginx é executado em segundo plano e se destaca do terminal. 
+Quando o modo daemon está desativado, o processo Nginx é executado em primeiro plano e permanece conectado ao terminal.
+
+
+
+
+
+
+
+
+
+PART BONUS
+Administrador
+
+O administrador é uma ferramenta para gerenciar sistemas de banco de dados. 
+É um único arquivo PHP que fornece uma interface amigável para trabalhar com bancos de dados. 
+Com o Adminer, você pode criar e soltar bancos de dados, criar, copiar, alterar e soltar tabelas, excluir, 
+editar e adicionar campos, executar qualquer comando SQL e gerenciar usuários e permissões. 
+O administrador suporta uma ampla gama de sistemas de banco de dados, incluindo MySQL, MariaDB, PostgreSQL, SQLite, Oracle e MS SQL. 
+É um software de código aberto que pode ser usado em qualquer servidor com PHP instalado.
+
+    Parte da instalação:
+
+    puxar debian:buster(A nossa imagem base)
+    atualizar o nosso gerenciador de pacotes apt update -y
+    apt install wget -y& & & apt-get install php php-mysql -y
+
+    O que é wgetO pacote é um utilitário para baixar arquivos da internet.
+    PHP é uma linguagem de programação que é frequentemente usada para desenvolver aplicações web dinâmicas. 
+    O módulo PHP MySQL permite que o PHP se comunique com bancos de dados MySQL. 
+    Depois de executar este comando, você terá o software necessário instalado para executar um aplicativo web PHP 
+    que interage com um banco de dados MySQL.
+
+FTP (Protocolo de Transferência de Arquivos)
+
+File Transfer Protocol (FTP) é um protocolo de rede padrão usado para transferir arquivos de um host para outro através 
+de uma rede baseada em TCP, como a internet. O FTP é construído em uma arquitetura cliente-servidor e usa controle separado 
+e conexões de dados entre o cliente e o servidor.
+
+O protocolo FTP permite que os clientes façam upload e download de arquivos, criem e excluam diretórios e listem o conteúdo 
+dos diretórios em um servidor remoto. Os clientes de FTP estão disponíveis para todos os principais sistemas operacionais, 
+e a maioria dos navegadores modernos também suporta FTP.
+Diferença entre o modo ativo e passivo Conexões
+
+No FTP, existem dois modos de transferência de dados: ativo e passivo. 
+No modo ativo, o cliente inicia uma conexão com o servidor para transferir dados. 
+No modo passivo, o cliente inicia uma conexão com o servidor para solicitar uma transferência de dados e, 
+em seguida, inicia uma conexão de volta ao cliente para enviar os dados.
+
+O modo passivo é frequentemente usado quando o cliente está atrás de um dispositivo de firewall ou NAT (Network Address Translation), 
+porque o firewall ou o NAT do cliente podem bloquear as conexões de entrada do servidor. 
+O modo passivo permite que o cliente estabeleça a conexão com o servidor e, em seguida, o servidor pode estabelecer 
+uma conexão de volta ao cliente para enviar dados.
+
+    Parte da instalação:
+
+    puxar debian:buster(A nossa imagem base)
+    atualizar o nosso gerenciador de pacotes apt update -y
+    apt install vsftpd -y
+
+vsftpdpacote em seu sistema. vsftpdsignifica "Very Secure FTP Daemon", e é um popular software de servidor FTP 
+para sistemas semelhantes a Unix. Uma vez instalado, você pode usar vsftpdpara configurar e gerenciar um servidor FTP em seu sistema.
+
+    script parte:
+
+#!/bin/bash
+
+service vsftpd start
+
+# Add the USER, change his password and declare him as the owner of wordpress folder and all subfolders
+
+adduser $ftp_user --disabled-password
+
+echo "$ftp_user:$ftp_pwd" | /usr/sbin/chpasswd &> /dev/null
+
+echo "$ftp_user" | tee -a /etc/vsftpd.userlist &> /dev/null
+
+mkdir /home/$ftp_user/ftp
+
+chown nobody:nogroup /home/$ftp_user/ftp
+chmod a-w /home/$ftp_user/ftp
+
+mkdir /home/$ftp_user/ftp/files
+chown $ftp_user:$ftp_user /home/$ftp_user/ftp/files
+
+sed -i -r "s/#write_enable=YES/write_enable=YES/1"   /etc/vsftpd.conf
+sed -i -r "s/#chroot_local_user=YES/chroot_local_user=YES/1"   /etc/vsftpd.conf
+
+echo "
+local_enable=YES
+allow_writeable_chroot=YES
+pasv_enable=YES
+local_root=/home/sami/ftp
+pasv_min_port=40000
+pasv_max_port=40005
+userlist_file=/etc/vsftpd.userlist" >> /etc/vsftpd.conf
+
+service vsftpd stop
+
+/usr/sbin/vsftpd
+
+    O script inicia o vsftpdO serviço usando o service- Comando.
+    Ele adiciona um novo usuário usando o addusercomando, com o nome de usuário especificado pelo $ftp_uservariável. 
+    O que é -disabled-passwordsinaliza que o usuário não deve conseguir fazer login usando uma senha.
+    O script então define a senha para o usuário para o valor especificado pelo $ftp_pwdvariável.
+    Ele adiciona o nome de usuário do novo usuário ao /etc/vsftpd.userlistarquivo, 
+    que é usado por vsftpdpara especificar quais usuários podem fazer login no servidor FTP.
+    O script cria um novo diretório em /home/$ftp_user/ftpe coloca o proprietário para nobody:nogroup- A . (í a , , , , , í , . 
+    Em seguida, ele define as permissões neste diretório para que ele não seja gravável.
+    O script cria outro diretório em /home/$ftp_user/ftp/filese coloca o proprietário para $ftp_user:$ftp_user- A . (í a , , ,
+    Ele modifica o /etc/vsftpd.confarquivar para habilitar a escrita e chroot (ou seja, a prisão) para os usuários locais, 
+    e para habilitar o modo passivo e especificar o intervalo de portas para usar para conexões de modo passivo.
+    local_enable=YES: Esta diretiva diz vsftpdpara permitir que usuários locais façam login no servidor FTP.
+    allow_writeable_chroot=YES: Esta diretiva diz vsftpdpara permitir que os usuários locais tenham acesso de gravação aos seus diretórios de casa.
+    pasv_enable=YES: Esta diretiva diz vsftpdpara permitir conexões de modo passivo.
+    Esta local_root=/home/sami/ftpdiretiva especifica o diretório raiz para usuários locais. 
+    Todos os usuários locais serão presos (ou seja, restrito) a este diretório e seus subdiretórios.
+    pasv_min_portE a pasv_max_portEssas diretivas especificam o intervalo de portas que o servidor p
+    ode usar para estabelecer uma conexão de volta ao cliente quando em modo passivo.
+    Esta userlist_file=/etc/vsftpd.userlistdiretiva especifica o arquivo que contém a lista de usuários que estão autorizados a fazer login no FTP.
+    O script pára o vsftpdserviço e começar novamente usando o /usr/sbin/vsftpd- Comando.
+
+Cache de REDIS
+
+Redis é um armazenamento de estrutura de dados na memória que pode ser usado como um banco de dados, cache e corretor de mensagens. 
+Ele suporta uma variedade de estruturas de dados, como strings, hashes, listas, conjuntos e muito mais. 
+Uma das principais características do Redis é a sua capacidade de armazenar dados em cache na memória, 
+o que lhe permite alcançar velocidades de leitura e gravação muito rápidas. 
+O Redis pode ser usado para melhorar o desempenho de aplicativos da Web, reduzindo o tempo necessário para acessar dados de um banco de dados 
+ou de outra camada de armazenamento lento. 
+Além de seus recursos de cache, a Redis também oferece mensagens de publicação/assin em cache, 
+transações e suporte para várias estruturas de dados, tornando-a uma ferramenta versátil para uma variedade de casos de uso.
+
+    Parte da instalação:
+
+    puxar debian:buster(A nossa imagem base)
+    atualizar o nosso gerenciador de pacotes apt update -y
+
+echo "maxmemory 256mb" >> /etc/redis/redis.conf
+echo "maxmemory-policy allkeys-lru" >> /etc/redis/redis.conf
+sed -i -r "s/bind 127.0.0.1/#bind 127.0.0.0/" /etc/redis/redis.conf
+
+Esses comandos instalarão o servidor Redis em seu sistema e o configurarão para usar um máximo de 256MB de memória. 
+A diretiva "máxima memória" define a quantidade máxima de memória que o Redis pode usar. 
+A diretiva "Política de Maxemória" especifica a política que a Redis deve usar quando o limite máximo de memória foi atingido. 
+Neste caso, a política "allkeys-lru" fará com que a Redis remova as chaves menos usadas recentemente para liberar a memória.
+
+É importante definir cuidadosamente o limite máximo de memória para a instância do Redis, pois o uso excessivo de memória 
+pode causar problemas de desempenho ou até mesmo travar o sistema. 
+Você também deve considerar o tipo de carga de trabalho que sua instância Redis estará manipulando, 
+pois diferentes cargas de trabalho podem ter requisitos de memória diferentes.
+
+para o último comando Este comando modifica o redis.confArquivo de configuração e comentários para fora binddiretiva, 
+que especifica o endereço IP que o servidor Redis deve ouvir. Ao comentar esta diretiva, o servidor Redis ouvirá 
+todas as interfaces de rede disponíveis.
+
+para manter a redis CMD ["redis-server", "--protected-mode", "no"]
+
+O que é redis-serverO comando é usado para iniciar o servidor Redis, que é um armazenamento de valor de chave 
+persistente que pode ser usado para armazenar estruturas de dados, como strings, hashes, listas e conjuntos.
+
+O que é --protected-modeOpção especifica se o servidor Redis deve ser executado em modo protegido ou não. 
+O modo protegido é um recurso de segurança que foi introduzido no Redis versão 4.0. 
+Ele impede que o servidor Redis aceite conexões de clientes que não estão sendo executados no mesmo host que o servidor.
+
+Especificando o noArgumento, o --protected-modeA opção desabilita o modo protegido e permite que o servidor Redis 
+aceite conexões de clientes em execução em qualquer host.
+
+e adicione essas linhas para wp-config.php
+
+define( 'WP_REDIS_HOST', 'redis'); define( 'WP_REDIS_PORT', 6379); definir('WP_CACHE', true);
+CADVISOR (serviço extra)
+
+O cAdvisor (abreviação de Container) é uma ferramenta de código aberto desenvolvida pelo Google 
+para monitorar e analisar o uso de recursos e o desempenho dos contêineres. Ele fornece informações 
+sobre o uso de recursos de contêineres individuais, bem como o uso de recursos da própria máquina host.
+
+O cAdvisor é executado como um daemon na máquina host e coleta dados de uso e desempenho de recursos do sistema operacional 
+e contêineres individuais. Ele expõe esses dados por meio de uma interface baseada na Web e de um conjunto de APIs RESTful, 
+permitindo que você monitore e analise o uso de recursos de seus contêineres em tempo real.
+
+O cAdvisor é particularmente útil para monitorar e otimizar o desempenho de aplicações em contêineres em um ambiente de produção. 
+Ele pode ajudá-lo a identificar restrições de recursos, solucionar problemas e otimizar a alocação de recursos para melhorar 
+o desempenho de seus contêineres.
+
+    Parte da instalação:
+
+    puxar debian:buster(A nossa imagem base)
+    atualizar o nosso gerenciador de pacotes apt update -y
+    apt install wget -y(Ao que aproe ( aproe--, aproe-se, a mesma (proa) apro-C, a wgetpacote, que é um utilitário para baixar arquivos da web.)
+    wget [https://github.com/google/cadvisor/releases/download/v0.37.0/cadvisor]
+    (https://github.com/google/cadvisor/releases/download/v0.37.0/cadvisor)(download cadvisor do gihub)
+    chmod +x cadvisorAlterar a permissão para o executável
+    por último, mas não menos importante, execute o executável ./cadvisore você pode encontrar as estatísticas no site.
+
+Nota:
+
+Certifique-se de expor a porta 8080 no arquivo docker-compose e também conectar os volumes certos que você pode ver como no arquivo docker-compose up
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
