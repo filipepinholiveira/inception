@@ -1,0 +1,247 @@
+
+
+1. Comandos Básicos
+
+    Verificar versão do Docker:
+
+        docker --version
+        docker -v
+
+
+
+    Informações gerais do Docker:
+
+        docker info
+
+
+    Testar Docker (Executar um contêiner de exemplo):
+
+        docker run hello-world
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+2. Gerenciamento de Contêineres
+
+    
+    Listar contêineres em execução:
+
+        docker ps
+
+
+    Listar todos os contêineres (em execução e parados):
+
+        docker ps -a
+
+    
+    Iniciar um contêiner parado:
+
+        docker start <container_id>
+
+    
+    Parar um contêiner em execução:
+
+        docker stop <container_id>
+
+    
+    Reiniciar um contêiner:
+
+        docker restart <container_id>
+
+
+    Remover um contêiner (parado):
+
+        docker rm <container_id>
+
+
+    Obter logs de um contêiner:
+
+        docker logs <container_id>
+
+
+    Executar comandos dentro de um contêiner:
+
+        docker exec -it <container_id> <comando>
+
+
+    Exemplo para abrir um shell bash:
+
+        docker exec -it <container_id> bash
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+3. Gerenciamento de Imagens
+
+    
+    Listar imagens disponíveis no sistema:
+
+        docker images
+
+
+    Buscar por uma imagem no Docker Hub:
+
+        docker search <imagem>
+
+
+    Baixar uma imagem do Docker Hub:
+
+        docker pull <nome_imagem>:<tag>
+
+        Exemplo:
+
+        docker pull ubuntu:latest
+
+
+
+    Remover uma imagem:
+
+        docker rmi <imagem_id>
+
+
+    Construir uma imagem a partir de um Dockerfile:
+
+        docker build -t <nome_imagem>:<tag> <diretório_dockerfile>
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+4. Gerenciamento de Volumes
+
+    Listar volumes:
+
+        docker volume ls
+
+
+    Criar um volume:
+
+        docker volume create <nome_volume>
+
+
+    Remover um volume:
+
+        docker volume rm <nome_volume>
+
+
+    Inspecionar um volume:
+
+        docker volume inspect <nome_volume>
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+5. Gerenciamento de Redes
+
+    Listar redes:
+
+        docker network ls
+
+
+    Criar uma nova rede:
+
+        docker network create <nome_rede>
+
+
+    Remover uma rede:
+
+        docker network rm <nome_rede>
+
+
+    Conectar um contêiner a uma rede:
+
+        docker network connect <nome_rede> <container_id>
+
+
+    Desconectar um contêiner de uma rede:
+
+        docker network disconnect <nome_rede> <container_id>
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+6. Comandos para Docker Compose
+
+O Docker Compose é uma ferramenta que permite definir e executar aplicativos multi-contêiner. 
+Aqui estão alguns comandos úteis relacionados ao Docker Compose:
+
+    Iniciar contêineres definidos em um arquivo docker-compose.yml:
+
+        docker-compose up
+
+
+    Iniciar contêineres em segundo plano (modo "detached"):
+
+        docker-compose up -d
+
+
+    Parar contêineres:
+
+        docker-compose down
+
+
+    Rebuild e reiniciar os contêineres:
+    
+        docker-compose up --build
+
+
+    Visualizar logs dos contêineres:
+
+        docker-compose logs
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    
+
+7. Outros Comandos Úteis
+
+    Limpar contêineres e imagens não utilizados (remove contêineres parados, imagens não utilizadas, volumes, etc.):
+
+        docker system prune
+
+
+    Visualizar o uso de recursos do Docker:
+
+        docker stats
+
+
+    Mostrar o histórico de comandos em um contêiner (exibe os layers):
+
+        docker history <imagem_id>
+
+    
+    Mostrar o uso de disco e recursos pelo Docker:
+
+        docker system df
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+8. Comandos Avançados
+
+    Construir uma imagem com um Dockerfile e especificar a tag:
+
+        docker build -t <nome_imagem>:<tag> .
+
+
+    Exportar o conteúdo de um contêiner para um arquivo tar:
+
+        docker export <container_id> > <nome_arquivo>.tar
+
+
+    Importar uma imagem de um arquivo tar:
+
+        docker import <nome_arquivo>.tar <nome_imagem>:<tag>
