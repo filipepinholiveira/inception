@@ -1,0 +1,94 @@
+
+# Arquivo de configuração do MariaDB - 50-server.cnf
+# Este arquivo contém as principais configurações do servidor MariaDB
+
+[server]
+# Configurações globais do servidor MariaDB
+
+[mysqld]
+# Configurações do servidor MariaDB (MySQL Daemon)
+
+# Porta padrão para o MariaDB
+port = 3306
+
+# Diretório de dados onde os arquivos do banco de dados serão armazenados
+datadir = /var/lib/mysql
+
+# Bind address: 0.0.0.0 permite conexões de qualquer IP
+bind-address = 0.0.0.0
+
+# Número máximo de conexões simultâneas
+max_connections = 200
+
+# Tamanho do buffer de chaves
+key_buffer_size = 32M
+
+# Definir o tamanho máximo de pacotes para a comunicação
+max_allowed_packet = 16M
+
+# Tamanho do buffer de sort (ordenação)
+sort_buffer_size = 2M
+
+# Tamanho do buffer de leitura (leitura de disco)
+read_buffer_size = 2M
+
+# Definir o nível do log binário (para replicação e recuperação de falhas)
+log_bin = /var/log/mysql/mariadb-bin
+log_bin_index = /var/log/mysql/mariadb-bin.index
+
+# Tempo limite para conexões inativas
+wait_timeout = 600
+
+# Habilitar o log lento (para identificar queries lentas)
+slow_query_log = 1
+slow_query_log_file = /var/log/mysql/mariadb-slow.log
+long_query_time = 2
+
+# Otimizar a tabela InnoDB
+innodb_buffer_pool_size = 256M
+innodb_log_file_size = 64M
+innodb_file_per_table = 1
+innodb_flush_log_at_trx_commit = 1
+
+[mysqldump]
+# Configurações para backup com mysqldump
+
+quick
+quote-names
+max_allowed_packet = 16M
+
+[mysql]
+# Configurações para o cliente MySQL
+
+# Configurações padrão para a linha de comando
+default-character-set = utf8mb4
+
+[client]
+# Configurações para o cliente MySQL (por exemplo, conexões remotas)
+
+port = 3306
+default-character-set = utf8mb4
+
+# Explicação de algumas configurações:
+
+# port = 3306: Define a porta padrão do servidor MariaDB. A porta 3306 é a porta padrão para MariaDB/MySQL.
+
+# bind-address = 0.0.0.0: Permite que o MariaDB aceite conexões de qualquer endereço IP. 
+# Isso é importante se o banco de dados for acessado remotamente.
+
+# max_connections = 200: Define o número máximo de conexões simultâneas que o servidor aceitará. Ajuste conforme a capacidade do servidor.
+
+# key_buffer_size = 32M: Tamanho da memória buffer usada para índices de tabelas MyISAM. 
+# Em servidores modernos, o InnoDB geralmente é preferido, mas ainda pode ser útil ajustar esse valor.
+
+# log_bin e log_bin_index: Configura o log binário, necessário para replicação de dados ou recuperação em caso de falha. 
+# Esse arquivo registra todas as alterações feitas no banco de dados.
+
+# innodb_buffer_pool_size = 256M: Memória destinada ao buffer do InnoDB. 
+# Esse valor geralmente é ajustado para corresponder à quantidade de memória disponível no servidor.
+
+# slow_query_log = 1: Habilita o log de queries lentas. Isso é útil para identificar consultas que demoram muito tempo para serem executadas.
+
+# innodb_flush_log_at_trx_commit = 1: Controla a integridade dos dados em caso de falhas. 
+# Com 1, o InnoDB grava os logs de transação em disco a cada transação, o que garante consistência, mas pode ser mais lento.
+

@@ -1,0 +1,28 @@
+
+docker-compose.yml:
+
+    version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: Vandalose  # Senha do usuário root
+      MYSQL_DATABASE: CENASminhas          # Nome do banco de dados a ser criado
+      MYSQL_USER: fpinho-d                   # Nome do usuário
+      MYSQL_PASSWORD: Vandalose       # Senha do usuário
+    ports:
+      - "3306:3306"                      # Mapeia a porta 3306 do container para a porta 3306 do host
+    volumes:
+      - mariadb_data:/var/lib/mysql      # Persiste os dados do banco em um volume
+    restart: always                      # Reinicia automaticamente o container se ele parar
+
+volumes:
+  mariadb_data:
+    driver: local
+
+
+--> docker-compose up -d
+--> docker exec -it mariadb mariadb -u fpinho-d -p ou docker exec -it mariadb mariadb -u root -
+

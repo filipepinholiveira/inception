@@ -83,6 +83,40 @@
             Verificar se o banco de dados foi criado corretamente:
                 SHOW DATABASES;
 
+            Verificar lista de utilizadores:
+                SELECT User, Host FROM mysql.user;
+                SELECT User, Host, authentication_string, plugin FROM mysql.user;
+                
+
+                Resumo de Comandos para Gerenciar Usuários:
+
+                Listar usuários:
+                    SELECT User, Host FROM mysql.user;
+
+                Alterar a senha de um usuário:
+                    SET PASSWORD FOR 'user1'@'localhost' = PASSWORD('nova_senha');
+
+                Conceder permissões:
+                    GRANT ALL PRIVILEGES ON exampledb.* TO 'user1'@'localhost' IDENTIFIED BY 'nova_senha';
+
+                Revogar permissões:
+                    REVOKE ALL PRIVILEGES ON exampledb.* FROM 'user1'@'localhost';
+
+                Deletar um usuário:
+                    DROP USER 'user1'@'localhost';
+
+                Criar um novo usuário:
+                    CREATE USER 'novo_usuario'@'localhost' IDENTIFIED BY 'senha_nova';
+
+                Mostrar permissões de um usuário:
+                    SHOW GRANTS FOR 'user1'@'localhost';
+
+                Sempre que realizar alterações como essas, não se esqueça de executar:
+                    FLUSH PRIVILEGES;
+
+                Isso garante que as mudanças feitas sejam aplicadas corretamente.
+
+
     6. Acessar o banco de dados como o novo usuário
 
             Você pode acessar o MariaDB como o usuário que acabou de criar:
@@ -212,6 +246,101 @@
                 Se você quiser excluir um banco de dados inteiro, use o comando DROP DATABASE. 
                 Isso removerá o banco de dados e todas as suas tabelas.
                     DROP DATABASE empresa;
+
+
+
+
+-  criar dockerfile para testar mariadb
+
+        Passos para criar uma imagem Docker que execute o MariaDB
+
+            1. Criar o Dockerfile
+
+                Primeiro, você precisa de um arquivo chamado Dockerfile para definir a configuração da sua imagem Docker. 
+                Vamos criar um Dockerfile simples que instale o MariaDB e o configure.
+
+                dockerfile:
+
+                # Use a imagem oficial do MariaDB como base
+                FROM mariadb:latest
+
+                # Defina variáveis de ambiente (opcional)
+                ENV MYSQL_ROOT_PASSWORD=rootpassword
+                ENV MYSQL_DATABASE=meubanco
+                ENV MYSQL_USER=meuusuario
+                ENV MYSQL_PASSWORD=senhausuario
+
+                # Exponha a porta do MariaDB
+                EXPOSE 3306
+
+                # Comando para inicializar o MariaDB
+                CMD ["mysqld"]
+
+
+                Explicação do Dockerfile:
+
+                FROM mariadb:latest: Estamos utilizando a imagem oficial do MariaDB no Docker Hub como base. Isso já inclui o MariaDB pré-instalado.
+
+                ENV: As variáveis de ambiente configuram o MariaDB:
+                    MYSQL_ROOT_PASSWORD: Define a senha do usuário root.
+                    MYSQL_DATABASE: Cria um banco de dados inicial.
+                    MYSQL_USER e MYSQL_PASSWORD: Cria um usuário específico com uma senha.
+
+                EXPOSE 3306: A porta 3306 é a porta padrão do MariaDB. Usamos isso para expor a porta do MariaDB 
+                no container para que possamos acessá-lo de fora.
+
+                CMD ["mysqld"]: Este é o comando padrão para rodar o MariaDB quando o container for iniciado. 
+                Ele pode ser opcional, pois a imagem oficial do MariaDB já o executa por padrão.
+            
+            
+            2. Construir a imagem Docker
+            
+
+                Agora que você tem o Dockerfile, o próximo passo é construir a imagem Docker.
+
+                Navegue até o diretório onde o Dockerfile está localizado.
+
+                Execute o seguinte comando para construir a imagem Docker a partir do Dockerfile:
+                    docker build -t mariadb-custom .
+
+                    docker run -d --name mariadb-container -p 3306:3306 mariadb:latest
+                    Ou
+                    docker run -d --name mariadb-container -p 3306:3306 -e MARIADB_ROOT_PASSWORD=vandalose mariadb:latest
+
+                        O motivo:
+
+                        Quando você usa a imagem oficial do MariaDB e especifica uma senha para o root através da variável de ambiente 
+                        no comando docker run (por exemplo, -e MARIADB_ROOT_PASSWORD=vandalose), essa variável sobrepõe qualquer valor 
+                        definido no Dockerfile. Ou seja, a configuração do Dockerfile é ignorada neste caso, porque a variável foi definida 
+                        diretamente na linha de comando.
+                        O que acontece no Dockerfile:
+
+                        No seu Dockerfile, quando você define ENV MYSQL_ROOT_PASSWORD=vandalose, isso cria uma variável de ambiente, 
+                        mas ela só será aplicada quando a imagem for construída. Porém, a imagem do MariaDB usa uma configuração específica 
+                        para o gerenciamento da senha do usuário root e não necessariamente respeita o valor do MYSQL_ROOT_PASSWORD em tempo 
+                        de execução, o que causa a necessidade de passar essa variável explicitamente com -e MARIADB_ROOT_PASSWORD.
+                        Como funciona na imagem oficial do MariaDB:
+
+                        A imagem oficial do MariaDB tem um script de inicialização (docker-entrypoint.sh) que verifica as variáveis de ambiente na hora de iniciar o banco de dados. Caso você não defina explicitamente a variável MARIADB_ROOT_PASSWORD ao rodar o container, ela pedirá uma senha (ou usará uma senha gerada aleatoriamente, dependendo da configuração).
+                        Conclusão:
+
+                            Se você definir MARIADB_ROOT_PASSWORD diretamente na linha de comando do docker run, ela substituirá qualquer valor definido no Dockerfile ou em outras fontes.
+                            Se você quiser que a variável de ambiente definida no Dockerfile seja usada sem sobreposição, você pode não definir a variável no docker run. Ou seja, pode simplesmente rodar o container com:
+
+                    --> para errros: docker logs mariadb-container
+
+                    -t mariadb-custom: O parâmetro -t é usado para dar um nome à sua imagem. 
+                    Aqui estamos nomeando nossa imagem como mariadb-custom.
+                    O ponto final (.) indica que o Dockerfile está no diretório atual.
+            
+            
+            
+            3. Rodar o container a partir da imagem criada
+
+                Depois de construir a imagem, você pode rodar um container com MariaDB da seguinte maneira:
+                    docker exec -it mariadb-container mariadb -u root -p
+
+
 
 
 
