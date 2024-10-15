@@ -1,94 +1,49 @@
 
-# Arquivo de configuração do MariaDB - 50-server.cnf
-# Este arquivo contém as principais configurações do servidor MariaDB
+# O arquivo é dividido em seções, com cada seção sendo indicada por um cabeçalho entre colchetes 
+# (por exemplo, [server], [mysqld], etc.). As opções dentro de cada seção configuram diferentes aspectos do servidor.
 
 [server]
-# Configurações globais do servidor MariaDB
 
 [mysqld]
-# Configurações do servidor MariaDB (MySQL Daemon)
 
-# Porta padrão para o MariaDB
-port = 3306
+user                    = mysql # Define o usuário sob o qual o servidor MariaDB deve ser executado. No caso, mysql, o que é padrão para a instalação.
 
-# Diretório de dados onde os arquivos do banco de dados serão armazenados
-datadir = /var/lib/mysql
+pid-file                = /run/mysqld/mysqld.pid # O caminho do arquivo PID (Process ID) que o servidor usará para armazenar seu identificador de processo. 
+                                                 # Isso é útil para monitoramento e controle do servidor.
 
-# Bind address: 0.0.0.0 permite conexões de qualquer IP
-bind-address = 0.0.0.0
+socket                  = /run/mysqld/mysqld.sock # efine o arquivo de socket para comunicação entre o servidor e os clientes. 
+                                                  # Esse arquivo permite que os clientes se conectem ao servidor local.
 
-# Número máximo de conexões simultâneas
-max_connections = 200
+port                    = 3306 # A porta que o servidor escutará para conexões de rede. O padrão para o MySQL/MariaDB é 3306.
 
-# Tamanho do buffer de chaves
-key_buffer_size = 32M
+basedir                 = /usr # O diretório base onde o MariaDB está instalado.
 
-# Definir o tamanho máximo de pacotes para a comunicação
-max_allowed_packet = 16M
+datadir                 = /var/lib/mysql # O diretório onde os dados do banco de dados são armazenados. Neste caso, é /var/lib/mysql.
 
-# Tamanho do buffer de sort (ordenação)
-sort_buffer_size = 2M
+tmpdir                  = /tmp # O diretório temporário usado pelo servidor para arquivos temporários, geralmente /tmp.
 
-# Tamanho do buffer de leitura (leitura de disco)
-read_buffer_size = 2M
+lc-messages-dir         = /usr/share/mysql # O diretório onde as mensagens de erro e avisos do servidor estão localizadas.
 
-# Definir o nível do log binário (para replicação e recuperação de falhas)
-log_bin = /var/log/mysql/mariadb-bin
-log_bin_index = /var/log/mysql/mariadb-bin.index
+query_cache_size        = 16M # O tamanho do cache de consultas em memória. Um cache de consultas pode melhorar o desempenho, 
+                              # armazenando os resultados de consultas comuns.
 
-# Tempo limite para conexões inativas
-wait_timeout = 600
+expire_logs_days        = 10 # O número de dias que os logs de transação serão mantidos antes de serem excluídos. 
+                             #Neste caso, os logs serão mantidos por 10 dias.
 
-# Habilitar o log lento (para identificar queries lentas)
-slow_query_log = 1
-slow_query_log_file = /var/log/mysql/mariadb-slow.log
-long_query_time = 2
+log_error				= /var/log/mysql/error.log # O arquivo onde os erros do servidor serão registrados. Isso é importante para diagnosticar problemas.
 
-# Otimizar a tabela InnoDB
-innodb_buffer_pool_size = 256M
-innodb_log_file_size = 64M
-innodb_file_per_table = 1
-innodb_flush_log_at_trx_commit = 1
+character-set-server	= utf8mb4 # O conjunto de caracteres padrão usado para o banco de dados. 
+                                  # utf8mb4 é uma boa escolha porque suporta todos os caracteres Unicode, incluindo emojis.
 
-[mysqldump]
-# Configurações para backup com mysqldump
+collation-server		= utf8mb4_general_ci # A collation padrão que define como as comparações de strings são realizadas. 
+                                             # utf8mb4_general_ci é uma collation case-insensitive para o conjunto de caracteres utf8mb4.
 
-quick
-quote-names
-max_allowed_packet = 16M
+[embedded]  # Esta seção é para configurações específicas de uma instalação embutida do MariaDB. 
+            # Não há opções listadas aqui, portanto, esta seção não está sendo utilizada.
 
-[mysql]
-# Configurações para o cliente MySQL
+[mariadb]  # Esta seção é destinada a opções específicas do MariaDB. Não contém configurações neste caso.
 
-# Configurações padrão para a linha de comando
-default-character-set = utf8mb4
+[mariadb-10.3] # Esta seção é destinada a configurações específicas da versão 10.3 do MariaDB. 
+               # Assim como as seções anteriores, não contém opções específicas.
 
-[client]
-# Configurações para o cliente MySQL (por exemplo, conexões remotas)
-
-port = 3306
-default-character-set = utf8mb4
-
-# Explicação de algumas configurações:
-
-# port = 3306: Define a porta padrão do servidor MariaDB. A porta 3306 é a porta padrão para MariaDB/MySQL.
-
-# bind-address = 0.0.0.0: Permite que o MariaDB aceite conexões de qualquer endereço IP. 
-# Isso é importante se o banco de dados for acessado remotamente.
-
-# max_connections = 200: Define o número máximo de conexões simultâneas que o servidor aceitará. Ajuste conforme a capacidade do servidor.
-
-# key_buffer_size = 32M: Tamanho da memória buffer usada para índices de tabelas MyISAM. 
-# Em servidores modernos, o InnoDB geralmente é preferido, mas ainda pode ser útil ajustar esse valor.
-
-# log_bin e log_bin_index: Configura o log binário, necessário para replicação de dados ou recuperação em caso de falha. 
-# Esse arquivo registra todas as alterações feitas no banco de dados.
-
-# innodb_buffer_pool_size = 256M: Memória destinada ao buffer do InnoDB. 
-# Esse valor geralmente é ajustado para corresponder à quantidade de memória disponível no servidor.
-
-# slow_query_log = 1: Habilita o log de queries lentas. Isso é útil para identificar consultas que demoram muito tempo para serem executadas.
-
-# innodb_flush_log_at_trx_commit = 1: Controla a integridade dos dados em caso de falhas. 
-# Com 1, o InnoDB grava os logs de transação em disco a cada transação, o que garante consistência, mas pode ser mais lento.
-
+# 

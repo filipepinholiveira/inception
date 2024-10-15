@@ -1,0 +1,54 @@
+
+APÓS CRIAR DOCKERFILE PARA MARIA DB TESTAR, CRIANDO A IMAGEM, CORRENDO A IMAGEM E EXECUTANDO A IMAGEM:
+
+criar imagem: 
+docker build -t mariadb .
+
+correr o container atraves da imagem criada:
+docker run -d mariadb
+
+verificar que correu a imagem, apesar de estar parada:
+docker ps -a
+
+verificar se mariadb foi criada
+docker logs id:
+
+    Starting MariaDB database server: mariadbd ..
+    --------------
+    CREATE DATABASE IF NOT EXISTS mydatabase
+    --------------
+
+    --------------
+    CREATE USER IF NOT EXISTS 'fpinho-d'@'%' IDENTIFIED BY 'xxxxx'
+    --------------
+
+    --------------
+    GRANT ALL PRIVILEGES ON mydatabase.* TO 'fpinho-d'@'%' IDENTIFIED BY 'xxxxx'
+    --------------
+
+    --------------
+    GRANT ALL PRIVILEGES ON mydatabase.* TO 'root'@'%' IDENTIFIED BY 'xxxxx'
+    --------------
+
+    --------------
+    SET PASSWORD FOR 'root'@'localhost' = PASSWORD('xxxxx')
+    --------------
+
+
+Com o ID copiado, execute o próximo comando para entrar no contêiner. exec é o comando para executar um comando dentro do contêiner, 
+-é o sinalizador para executar o comando no modo interativo, e ID é o ID do contêiner 
+e /bin/bash é o comando que queremos executar, neste caso queremos usar seu terminal:
+docker exec -it copiedID /bin/bash
+
+    --- entra no container em root$
+
+    mysql -u fpinho-d -p mydatabase
+
+    -- entra na mariadb com MariaDB [mydatabase]>  
+
+        podemos brincar a partir daqui
+
+NO FINAL PARA PARAR CONAINER, REMOVER -IT E A IMAGEM:
+
+    docker rm -f $(docker ps -aq) &&  docker rmi -f $(docker images -aq)
+
