@@ -1,49 +1,6 @@
-
-# O arquivo é dividido em seções, com cada seção sendo indicada por um cabeçalho entre colchetes 
-# (por exemplo, [server], [mysqld], etc.). As opções dentro de cada seção configuram diferentes aspectos do servidor.
-
-[server]
-
 [mysqld]
-
-user                    = mysql # Define o usuário sob o qual o servidor MariaDB deve ser executado. No caso, mysql, o que é padrão para a instalação.
-
-pid-file                = /run/mysqld/mysqld.pid # O caminho do arquivo PID (Process ID) que o servidor usará para armazenar seu identificador de processo. 
-                                                 # Isso é útil para monitoramento e controle do servidor.
-
-socket                  = /run/mysqld/mysqld.sock # efine o arquivo de socket para comunicação entre o servidor e os clientes. 
-                                                  # Esse arquivo permite que os clientes se conectem ao servidor local.
-
-port                    = 3306 # A porta que o servidor escutará para conexões de rede. O padrão para o MySQL/MariaDB é 3306.
-
-basedir                 = /usr # O diretório base onde o MariaDB está instalado.
-
-datadir                 = /var/lib/mysql # O diretório onde os dados do banco de dados são armazenados. Neste caso, é /var/lib/mysql.
-
-tmpdir                  = /tmp # O diretório temporário usado pelo servidor para arquivos temporários, geralmente /tmp.
-
-lc-messages-dir         = /usr/share/mysql # O diretório onde as mensagens de erro e avisos do servidor estão localizadas.
-
-query_cache_size        = 16M # O tamanho do cache de consultas em memória. Um cache de consultas pode melhorar o desempenho, 
-                              # armazenando os resultados de consultas comuns.
-
-expire_logs_days        = 10 # O número de dias que os logs de transação serão mantidos antes de serem excluídos. 
-                             #Neste caso, os logs serão mantidos por 10 dias.
-
-log_error				= /var/log/mysql/error.log # O arquivo onde os erros do servidor serão registrados. Isso é importante para diagnosticar problemas.
-
-character-set-server	= utf8mb4 # O conjunto de caracteres padrão usado para o banco de dados. 
-                                  # utf8mb4 é uma boa escolha porque suporta todos os caracteres Unicode, incluindo emojis.
-
-collation-server		= utf8mb4_general_ci # A collation padrão que define como as comparações de strings são realizadas. 
-                                             # utf8mb4_general_ci é uma collation case-insensitive para o conjunto de caracteres utf8mb4.
-
-[embedded]  # Esta seção é para configurações específicas de uma instalação embutida do MariaDB. 
-            # Não há opções listadas aqui, portanto, esta seção não está sendo utilizada.
-
-[mariadb]  # Esta seção é destinada a opções específicas do MariaDB. Não contém configurações neste caso.
-
-[mariadb-10.3] # Esta seção é destinada a configurações específicas da versão 10.3 do MariaDB. 
-               # Assim como as seções anteriores, não contém opções específicas.
-
-# 
+datadir = /var/lib/mysql
+socket = /run/mysqld/mysqld.sock
+bind_address = 0.0.0.0
+port = 3306
+user = mysql 

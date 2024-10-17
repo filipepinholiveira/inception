@@ -1,0 +1,67 @@
+services:
+  mariadb:
+    build:
+      context: ./mariadb/.
+    container_name: mariadb
+    image: mariadb:latest
+    volumes:
+      - /home/filipe-oliveira/data/mariadb_volume:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: Vandalose
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: fpinho-d
+      MYSQL_PASSWORD: Vandalose
+    networks:
+      - inception
+    init: true
+    restart: on-failure
+    env_file:
+      - .env
+  wordpress:
+    build:
+      context: ./wordpress/.
+    container_name: wordpress
+    image: wordpress:latest
+    volumes:
+      - /home/filipe-oliveira/data/wordpress_volume:/var/www/html
+    networks:
+      - inception
+    init: true
+    env_file:
+      - .env
+    depends_on:
+      - mariadb
+  nginx:
+    build: 
+      context: ./nginx/.
+    container_name: nginx
+    image: nginx:latest
+    ports:
+      - '443:443'
+    volumes:
+      - /home/filipe-oliveira/data/wordpress_files:/var/www/html
+    networks:
+      - inception
+    init: true
+    restart: on-failure
+    env_file:
+      - .env
+    depends_on:
+      - wordpress
+
+volumes:
+  database:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/filipe-oliveira/data/mariadb_volume
+  wordpress_files:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/filipe-oliveira/data/wordpress_volume
+
+networks:
+  inception:

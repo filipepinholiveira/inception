@@ -1,64 +1,22 @@
+FROM debian:bullseye
 
-FROM debian:bullseye                                        
-# indica que a nova imagem Docker será construída sobre a imagem Debian Bullseye
+RUN apt-get update && apt-get upgrade -y && apt-get install -y mariadb-server \
+	&& apt-get install vim -y \
+	&& rm -rf /var/lib/apt/lists/*
 
-EXPOSE 3306                                                 
-#  está expondo a porta 3306, que é a porta padrão utilizada pelo MySQL para conexões
+RUN mkdir -p /var/lib/mysql \
+	&& chown -R mysql:mysql /var/lib/mysql \
+	&& chmod -R 755 /var/lib/mysql
+
+RUN mkdir -p /run/mysqld \
+	&& chown -R mysql:mysql /run/mysqld \
+	&& chmod -R 755 /run/mysqld
+
+COPY conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf 
+COPY tools/mariadb.sh /bin/
+RUN chmod +x /bin/mariadb.sh
 
 
-RUN	    apt update && \                      
-    # Atualiza a lista de pacotes disponíveis
-    #
-        apt install -y --no-install-recommends --no-install-suggests \ 
-    # apt install: Instala o pacote mariadb-server, que é o servidor de banco de dados MariaDB.
-    #
-    # -y: Aceita automaticamente todas as perguntas de confirmação que surgiriam durante a instalação (como "Você deseja continuar? [S/n]").
-    #
-    # --no-install-recommends: Instala apenas o pacote principal e evita a instalação de pacotes recomendados (ou seja, evita instalar pacotes 
-    # extras que não são estritamente necessários).
-    #
-    # --no-install-suggests: Evita a instalação de pacotes sugeridos. Esses pacotes geralmente são sugeridos como complementos úteis, 
-    # mas não são essenciaRUN mysqld --initialize-insecureis para o funcionamento do mariadb-server.
-	#
-        mariadb-server && \
-    # instala o pacote mariadb-server, que é o servidor de banco de dados MariaDB.
-    # O operador && garante que o próximo comando só será executado se a instalação do mariadb-server for bem-sucedida. 
-    # Caso contrário, o processo será interrompido. Isso adiciona uma verificação de erro entre os comandos.
-    #
-	    rm -rf /var/lib/apt/lists/* 
-    # Esse comando remove os arquivos temporários que foram baixados durante o comando apt update, 
-    # localizados no diretório /var/lib/apt/lists/. Isso reduz o tamanho final da imagem Docker, 
-    # pois os arquivos de lista de pacotes não são mais necessários após a instalação do MariaDB. 
-    # Esse passo é uma prática comum para manter as imagens Docker o mais enxutas possível.
-RUN     mysql_install_db --user=mysql --datadir=/var/lib/mysql
-    # Inicializa o banco de dados
+EXPOSE 3306
 
-COPY	conf/50-server.cnf /etc/mysql/mariadb.conf.d/
-    # copiando um arquivo de configuração do host (neste caso, conf/50-server.cnf) para dentro do contêiner, 
-    # no diretório /etc/mysql/mariadb.conf.d/, que é onde o MariaDB geralmente armazena seus arquivos de configuração.
-    #
-    #Aqui está o que acontece em detalhes:
-    #
-    # COPY conf/50-server.cnf:
-    # O COPY pega o arquivo 50-server.cnf da pasta conf que está localizada no seu sistema host (o sistema onde você está construindo a imagem Docker). 
-    # Esse arquivo pode conter configurações personalizadas para o servidor MariaDB, como ajustes de desempenho, parâmetros de segurança, 
-    # ou configurações de rede.
-    #
-    #/etc/mysql/mariadb.conf.d/:
-    # Esse é o diretório dentro do contêiner onde os arquivos de configuração do MariaDB são armazenados. 
-    # O arquivo 50-server.cnf será copiado para este local, o que significa que ele substituirá ou complementará 
-    # as configurações padrão de MariaDB quando o contêiner for iniciado.
-    #
-COPY	tools/setup.sh /bin/
-    # Esse comando copia o script setup.sh do diretório tools no sistema host (onde você está criando a imagem Docker) 
-    # para o diretório /bin/ dentro do contêiner.
-    #
-    # O diretório /bin/ é tradicionalmente usado para armazenar executáveis de sistema no Linux, 
-    # e ao copiar o script para esse diretório, você está tornando-o facilmente acessível no contêiner.
-RUN	    chmod +x /bin/setup.sh
-    # O comando chmod +x altera as permissões do arquivo /bin/setup.sh, tornando-o executável (+x).
-    # Isso significa que, depois dessa instrução, você poderá executar o script setup.sh diretamente dentro do contêiner.
-CMD     ["setup.sh", "mysqld_safe"]
-    # setup.sh: Este é o script que foi previamente copiado e tornado executável.
-    # mysqld_safe: Este é o comando que inicia o MariaDB em modo seguro. 
-    #Ele é uma maneira robusta de iniciar o MariaDB, fornecendo recursos adicionais de recuperação e monitoramento em caso de falhas.
+CMD ["/bin/mariadb.sh", "/usr/bin/mysqld_safe"]

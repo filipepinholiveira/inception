@@ -1,0 +1,50 @@
+# Instala o servidor Nginx com suporte para HTTPS (SSL).
+# Gera um certificado SSL autoassinado.
+# Configura permissões e propriedades para a pasta onde serão armazenados os arquivos web.
+# Exibe a porta 443 para conexões HTTPS.
+# Finalmente, inicia o Nginx no modo não daemon, mantendo o container ativo.
+
+
+FROM debian:bullseye
+#Define a imagem base como Debian Bullseye
+
+RUN apt-get update && apt-get upgrade -y && apt-get install -y nginx \
+    # Atualiza a lista de pacotes (apt-get update).
+    # Atualiza todos os pacotes instalados para a versão mais recente (apt-get upgrade -y).
+    # Instala o servidor Nginx (apt-get install -y nginx).
+	&& apt-get clean \
+    # Remove arquivos de cache para manter a imagem mais leve, reduzindo o espaço ocupado pelos pacotes baixados.
+	&& apt-get install vim -y \
+    # vim: Editor de texto básico.
+	&& apt-get install curl -y \
+    # curl: Ferramenta para transferências de dados de ou para um servidor.
+	&& mkdir -p /etc/nginx/ssl 
+    # Cria um diretório onde os certificados SSL serão armazenados.
+
+RUN apt-get install openssl -y
+    # Instala o OpenSSL para permitir a criação de certificados SSL.
+
+RUN openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/nginx/ssl/inception.key -subj "/C=PT/L=Porto/CN=fpinho-d.42.fr/UID=fpinho-d"
+    # Gera um certificado autoassinado (inception.crt) e uma chave privada (inception.key) para Nginx.
+    # define os detalhes do certificado (país, localidade, domínio e UID).
+
+RUN mkdir -p /var/run/nginx
+    # Este diretório é onde o Nginx armazenará seus arquivos de execução, como o PID.
+
+COPY conf/nginx.conf /etc/nginx/nginx.conf
+    # Copia o arquivo de configuração personalizado do Nginx (nginx.conf) do host para dentro do container.
+
+RUN chmod -R 755 /var/www/html
+    # Define permissões de leitura e execução para diretórios e arquivos dentro de /var/www/html.
+RUN find /var/www/html -type d -exec chmod 755 {} \;
+RUN find /var/www/html -type f -exec chmod 644 {} \;
+
+RUN chown -R www-data:www-data /var/www/html
+    # Altera a propriedade dos arquivos para o usuário www-data (usuário padrão do Nginx).
+
+EXPOSE 443
+    # Expõe a porta 443, que é a porta padrão para HTTPS, indicando que o container deve aceitar conexões HTTPS.
+
+
+CMD [ "nginx", "-g", "daemon off;" ]
+    # Inicia o Nginx em primeiro plano (daemon off;), para que ele continue rodando no container.
