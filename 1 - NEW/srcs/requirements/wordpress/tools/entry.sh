@@ -37,10 +37,7 @@ fi
 mv /tmp/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 mkdir /run/php
 
-
-wp plugin install redis-cache --activate --allow-root
 wp plugin update --all --allow-root
-wp redis enable --allow-root
 
 /usr/sbin/php-fpm7.4 -F
 

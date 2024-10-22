@@ -27,19 +27,11 @@ server {
         include snippets/fastcgi-php.conf;
         fastcgi_pass wordpress:9000;
     }
-
-    location /adminer {
-        proxy_pass http://adminer:80;
-        proxy_set_header Host \$host;
-        proxy_set_header X-Real-IP \$remote_addr;
-        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto \$scheme;
-    }
 }
 " >  /etc/nginx/sites-available/default
 
 
 
-nginx -t
+#nginx -t
 
 nginx -g "daemon off;"

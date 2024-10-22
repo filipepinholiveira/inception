@@ -11,7 +11,7 @@ RUN apt -y update && \
 
 # Copy the entrypoint script
 COPY ./tools/entry.sh /tmp/entry.sh
-RUN chmod 755 /tmp/entry.sh
+RUN chmod +x /tmp/entry.sh
 
 # Set the entrypoint script as the entry point for the container
 ENTRYPOINT ["/bin/bash", "/tmp/entry.sh" ]

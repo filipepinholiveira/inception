@@ -6,8 +6,6 @@ all: up
 dir:
 	sudo mkdir -p $(DIR_PATH)/mariadb
 	sudo mkdir -p $(DIR_PATH)/wordpress
-	sudo mkdir -p $(DIR_PATH)/website
-	sudo mkdir -p $(DIR_PATH)/teeworlds
 
 up: dir
 	sudo docker compose -f srcs/docker-compose.yml up --build -d

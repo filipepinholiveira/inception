@@ -7,7 +7,6 @@ RUN apt-get update -y && \
         php7.4-fpm \
         php7.4-mysql \
         php7.4-dev \ 
-        php-redis \
         curl \
     && rm -rf /var/lib/apt/lists/* \
 	&& apt-get clean

@@ -12,29 +12,10 @@ services:
             - mariadb_data:/var/lib/mysql
         networks:
             - myNetwork
-    nginx:
-        container_name: nginx
-        depends_on:
-            - wordpress
-            - adminer
-        build:
-            context: ./requirements/nginx
-            dockerfile: Dockerfile
-        restart: unless-stopped
-        env_file:
-            - .env
-        image: nginx
-        volumes:
-            - wordpress_data:/var/www/html
-        ports:
-            - "443:443"
-        networks:
-            - myNetwork
     wordpress:
         container_name: wordpress
         depends_on:
             - mariadb
-            - redis
         build:
             context: ./requirements/wordpress
             dockerfile: Dockerfile
@@ -46,76 +27,21 @@ services:
             - wordpress_data:/var/www/html
         networks:
             - myNetwork
-    redis:
-        container_name: redis
-        build:
-            context: ./requirements/redis
-            dockerfile: Dockerfile
-        restart: unless-stopped
-        image: redis
-        env_file:
-            - .env
-        volumes:
-            - wordpress_data:/var/www/html
-        networks:
-            - myNetwork
-    website:
-        container_name: website
-        build:
-            context: ./requirements/website
-            dockerfile: Dockerfile
-        restart: unless-stopped
-        image: website
-        volumes:
-            - website_data:/var
-        ports:
-            - "2000:2000"
-    ftp:
-        container_name: ftp
+    nginx:
+        container_name: nginx
         depends_on:
             - wordpress
         build:
-            context: ./requirements/FTP
+            context: ./requirements/nginx
             dockerfile: Dockerfile
         restart: unless-stopped
-        image: ftp
         env_file:
             - .env
+        image: nginx
         volumes:
             - wordpress_data:/var/www/html
         ports:
-            - "21:21"
-            - "20:20"
-        networks:
-            - myNetwork
-    adminer:
-        container_name: adminer
-        depends_on:
-            - mariadb
-        volumes:
-            - wordpress_data:/var/www/html
-        build:
-            context: ./requirements/adminer
-            dockerfile: Dockerfile
-        restart: unless-stopped
-        image: adminer
-        env_file:
-            - .env
-        networks:
-            - myNetwork
-    teeworlds:
-        container_name: teeworlds
-        volumes:
-            - teeworlds_data:/tmp
-        build:
-            context: ./requirements/teeworlds
-            dockerfile: Dockerfile
-        restart: unless-stopped
-        image: teeworlds
-        env_file:
-            - .env
-        ports:
-            - "8303:8303"
+            - "443:443"
         networks:
             - myNetwork
 
@@ -140,17 +66,3 @@ volumes:
       type: 'none'
       o: 'bind'
       device: "/home/ade-pinh/data/wordpress"
-  website_data:
-    name: website_data
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: "/home/ade-pinh/data/website"
-  teeworlds_data:
-    name: teeworlds_data
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: "/home/ade-pinh/data/teeworlds"
