@@ -1,0 +1,81 @@
+services:
+    mariadb:
+        container_name: mariadb
+        build:
+            context: ./requirements/mariadb
+            dockerfile: Dockerfile
+        env_file:
+            - .env
+        restart: unless-stopped
+        image: mariadb
+        volumes:
+            - mariadb_data:/var/lib/mysql
+        networks:
+            - myNetwork
+    wordpress:
+        container_name: wordpress
+        depends_on:
+            - mariadb
+        build:
+            context: ./requirements/wordpress
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        image: wordpress
+        env_file:
+            - .env
+        volumes:
+            - wordpress_data:/var/www/html
+        networks:
+            - myNetwork
+    nginx:
+        container_name: nginx
+        depends_on:
+            - wordpress
+        build:
+            context: ./requirements/nginx
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        env_file:
+            - .env
+        image: nginx
+        volumes:
+            - wordpress_data:/var/www/html
+        ports:
+            - "443:443" # Mapeia a porta 443 do contêiner para a porta 443 do host, permitindo acesso HTTPS.
+        networks:
+            - myNetwork
+
+
+# Define uma rede chamada inception usando o driver bridge, que é o padrão no Docker. Essa rede permite que os contêineres se comuniquem entre si.
+networks:
+    myNetwork:
+        name: inception
+        driver: bridge
+
+# Volumes são uma forma de persistir dados em contêineres Docker. 
+# Quando um contêiner é removido ou recriado, os dados armazenados dentro dele são perdidos, a menos que estejam em um volume. 
+# Os volumes permitem que os dados sejam persistentes, mesmo que o contêiner que os criou não exista mais.
+
+volumes:
+  mariadb_data:
+    name: mariadb_data
+    driver: local # O driver local é o padrão e é usado para armazenar dados em um diretório no sistema de arquivos do host
+    driver_opts: # Define opções específicas para o driver
+      type: 'none' # Indica que não há um tipo de volume especial 
+      o: 'bind' # Especifica que este volume será montado como um bind mount
+      device: "/home/filipe-oliveira/data/mariadb" # Isso permite que os dados sejam acessados diretamente pelo sistema de arquivos do host, fora do contêiner.
+  wordpress_data:
+    name: wordpress_data
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: "/home/filipe-oliveira/data/wordpress"
+
+# Benefícios de Usar Bind Mounts
+
+#     Persistência de Dados: Os dados não são perdidos quando o contêiner é removido ou recriado, já que estão armazenados em um diretório do host.
+#     Facilidade de Acesso: É fácil acessar e manipular os dados diretamente no sistema de arquivos do host. Isso é útil para tarefas 
+#     de backup ou para inspeção dos dados.
+#     Desenvolvimento: Durante o desenvolvimento, é possível fazer alterações nos arquivos no diretório do host 
+#     e ver essas alterações refletidas instantaneamente no contêiner, facilitando o fluxo de trabalho.
