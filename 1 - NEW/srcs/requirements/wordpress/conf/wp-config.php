@@ -8,17 +8,6 @@ define( 'DB_CHARSET', 'utf8' );
 define( 'DB_COLLATE', '' );
 define( 'WP_CACHE' , true);
 
-
-// define('FS_METHOD', 'ftpext');
-// define('FTP_BASE', getenv('WP_DIR'));
-// define('FTP_CONTENT_DIR', getenv('WP_DIR')'/wp-content');
-// define('FTP_PLUGIN_DIR ', getenv('WP_DIR')'/wp-content/plugins/');
-// define('FTP_USER', getenv('FTP_USER'));
-// define('FTP_PASS', getenv('FTP_PASSWORD'));
-// define('FTP_HOST', getenv('DOMAIN'));
-// define('FTP_SSL', false);
-
-
 define('AUTH_KEY',         'nynZN@p%~s+VI2R}}wUJ[QIeCFk-DkNI)A:h=badn/,4xBpfAt,y(#,N}hnGAk [');
 define('SECURE_AUTH_KEY',  '5}`z5X=]VN(~tp&pMG(~cwLoxIC`cnRqAP5Yf|f%^aN9-H+1O!|feL}slY#laZF9');
 define('LOGGED_IN_KEY',    '_CI;<.-Yb#q6/C)w5BO*Qw!+rrp}umu+0bg|E,p<zdg T#E.|.<{|(BDczhL<#v(');

@@ -32,6 +32,6 @@ server {
 
 
 
-#nginx -t
+nginx -t
 
 nginx -g "daemon off;"

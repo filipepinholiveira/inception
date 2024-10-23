@@ -58,11 +58,11 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: "/home/ade-pinh/data/mariadb"
+      device: "/home/filipe-oliveira/data/mariadb"
   wordpress_data:
     name: wordpress_data
     driver: local
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: "/home/ade-pinh/data/wordpress"
+      device: "/home/filipe-oliveira/data/wordpress"

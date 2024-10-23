@@ -1,5 +1,5 @@
 # Define default directory path and hostname
-DIR_PATH ?= /home/ade-pinh/data
+DIR_PATH ?= /home/filipe-oliveira/data
 
 all: up
 
